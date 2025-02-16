@@ -1,12 +1,10 @@
-package com.coletas.coletas.dao.impl;
+package com.coletas.coletas.dao;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.coletas.coletas.dao.BaseDAO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -16,7 +14,8 @@ import jakarta.transaction.Transactional;
 public abstract class BaseDAOImpl<T, ID> implements BaseDAO<T, ID> {
 	
 	@Autowired
-    protected EntityManager entityManager;
+	protected EntityManager entityManager;
+
 
  	private final Class<T> entityClass;
 

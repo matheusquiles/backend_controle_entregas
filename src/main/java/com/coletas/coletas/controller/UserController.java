@@ -7,7 +7,7 @@ import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping(value = "/api/users")
+@RequestMapping("/api/users")
 public class UserController extends BaseControllerImpl<Users, Integer> {
 	
 	public UserController(UserServiceImpl service) {

@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.model.Users;
 

@@ -5,12 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.2</version>
+		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.coletas</groupId>
 	<artifactId>coletas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>coletas</name>
 	<description>projeto Coletas</description>
 	<url/>
@@ -49,7 +50,7 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
-		<start-class>com.projeto.processos.ProcessosApplication </start-class>
+		<start-class>com.coletas.coletas.ColetasApplication </start-class>
 	</properties>
 	<dependencies>
 		<dependency>
