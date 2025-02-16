@@ -18,6 +18,11 @@ public class Permission implements Serializable{
 	
 	public Permission() {
 	}
+	
+	public Permission(Integer idPermission) {
+		super();
+		this.idPermission = idPermission;
+	}
 
 	public Permission(Integer idPermission, String description) {
 		super();

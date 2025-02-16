@@ -20,16 +20,16 @@ public interface BaseController<T, ID> {
     @GetMapping("/{id}")
     T get(@PathVariable ID id);
 
-    @PostMapping("/salvar")
+    @PostMapping("/save")
     Boolean save(@RequestBody T entity);
 
-    @DeleteMapping("/deletar/{id}")
+    @DeleteMapping("/del/{id}")
     String delete(@PathVariable ID id);
 
-    @PutMapping("/atualizar")
+    @PutMapping("/modify")
     T update(@RequestBody T entity);
     
-    @PostMapping("/buscar-por-descricao")
+    @PostMapping("/searchDescription")
     boolean buscarPorDescricao(@RequestBody DescriptionRequest request);
 
 }

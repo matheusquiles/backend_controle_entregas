@@ -18,11 +18,11 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 	
 
 	@Override
-	public Optional<Users> getByDescription(String nome) {
+	public Optional<Users> getByDescription(String userKey) {
         Session currentSession = entityManager.unwrap(Session.class);
-        String hql = "FROM users e WHERE LOWER(e.nome) = LOWER(:nome)";
+        String hql = "FROM Users u WHERE LOWER(u.userKey) = LOWER(:userKey)";
         Users e = currentSession.createQuery(hql, Users.class)
-                .setParameter("nome", nome)
+                .setParameter("userKey", userKey)
                 .uniqueResult();
         return Optional.ofNullable(e);
 	}

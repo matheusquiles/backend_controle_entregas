@@ -4,12 +4,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import org.springframework.data.annotation.Transient;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -29,7 +29,12 @@ public class Users implements Serializable{
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
-	@Transient
+	@OneToOne()
+	@JoinColumn(name = "user_type")
+	private UserType userType;
+	
+	@OneToOne()
+	@JoinColumn(name = "permission")
 	private Permission permission;
 	
 	public Users() {
@@ -46,6 +51,28 @@ public class Users implements Serializable{
 		this.status = status;
 		this.permission = permission;
 	}
+	
+	public Users(String name, String cpf, String email, String userKey, Boolean status, UserType userType,
+			Permission permission) {
+		super();
+		this.name = name;
+		this.cpf = cpf;
+		this.email = email;
+		this.userKey = userKey;
+		this.status = status;
+		this.userType = userType;
+		this.permission = permission;
+	}
+
+	public Users(String name, String cpf, String email, String userKey, Boolean status) {
+		super();
+		this.name = name;
+		this.cpf = cpf;
+		this.email = email;
+		this.userKey = userKey;
+		this.status = status;
+	}
+	
 
 	public Integer getIdUser() {
 		return idUser;
@@ -122,6 +149,16 @@ public class Users implements Serializable{
 	@Override
 	public int hashCode() {
 		return Objects.hash(idUser);
+	}
+	
+	
+
+	public UserType getUserType() {
+		return userType;
+	}
+
+	public void setUserType(UserType userType) {
+		this.userType = userType;
 	}
 
 	@Override
