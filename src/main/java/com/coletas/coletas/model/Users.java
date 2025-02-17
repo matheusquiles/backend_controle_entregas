@@ -4,6 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import org.springframework.data.annotation.Transient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +33,9 @@ public class Users implements Serializable{
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
+	@Transient
+	private String password;
+	
 	@OneToOne()
 	@JoinColumn(name = "user_type")
 	private UserType userType;
@@ -40,39 +47,18 @@ public class Users implements Serializable{
 	public Users() {
 	}
 
-	public Users(Integer idUser, String name, String cpf, String email, String userKey, Boolean status,
-			Permission permission) {
-		super();
-		this.idUser = idUser;
-		this.name = name;
-		this.cpf = cpf;
-		this.email = email;
-		this.userKey = userKey;
-		this.status = status;
-		this.permission = permission;
-	}
-	
-	public Users(String name, String cpf, String email, String userKey, Boolean status, UserType userType,
-			Permission permission) {
+	public Users(String name, String cpf, String email, String userKey, Boolean status, String password,
+			UserType userType, Permission permission) {
 		super();
 		this.name = name;
 		this.cpf = cpf;
 		this.email = email;
 		this.userKey = userKey;
 		this.status = status;
+		this.password = password;
 		this.userType = userType;
 		this.permission = permission;
 	}
-
-	public Users(String name, String cpf, String email, String userKey, Boolean status) {
-		super();
-		this.name = name;
-		this.cpf = cpf;
-		this.email = email;
-		this.userKey = userKey;
-		this.status = status;
-	}
-	
 
 	public Integer getIdUser() {
 		return idUser;
@@ -151,7 +137,17 @@ public class Users implements Serializable{
 		return Objects.hash(idUser);
 	}
 	
-	
+	public String getPassword() {
+		return password;
+	}
+
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 
 	public UserType getUserType() {
 		return userType;

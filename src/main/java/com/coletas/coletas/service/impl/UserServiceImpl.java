@@ -7,25 +7,62 @@ import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements UserService{
-	
+public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements UserService {
+
 	@Autowired
 	private UserDAO dao;
-	
+	@Autowired
+	private SecurityUserService securityService;
+
 	@Transactional
 	@Override
 	public void save(Users entity) {
-		if(dao.getByDescription(entity.getUserKey()).isEmpty()){
+		try {
 			entity.setCreationDate(LocalDateTime.now());
 			dao.save(entity);
-		}  else {
-	        throw new RuntimeException("User " + entity.getUserKey() + " already exists");
-	    }		
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to save user: " + entity.getUserKey(), e);
+		}
+	}
+
+	@Transactional
+	private void savePassword(Users entity) {
+		try {
+			securityService.save(entity);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public Boolean searchUser(String userKey) {
+		return dao.getByUserKey(userKey);
+	}
+
+	@Override
+	public Boolean saveUser(Users user) {
+		try {
+			user.setCreationDate(LocalDateTime.now());
+			dao.save(user);
+			return true;
+
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to save user: " + user.getUserKey(), e);
+		}
+	}
+
+	@Override
+	public Users getUserByKey(String userKey) {
+		return dao.getUserByKey(userKey);
 	}
 
 }
