@@ -2,7 +2,10 @@ package com.coletas.coletas.dao.impl;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.coletas.coletas.dao.BaseDAOImpl;
@@ -27,6 +30,25 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Integer countCollectByUserAndDate(Integer idUser, LocalDate date) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		StringBuilder hql = new StringBuilder();
+		hql.append("select count(co.idCollect) ");
+		hql.append("from Collect co ");
+		hql.append("inner join co.userId user ");
+		hql.append("where co.date = :date ");
+		hql.append("and user.idUser = :idUser ");
+		
+		Query<Long> query = currentSession.createQuery(hql.toString(), Long.class);
+		query.setParameter("date", date);
+		query.setParameter("idUser", idUser);
+
+        Optional<Long> result = query.uniqueResultOptional();
+        return result.map(Long::intValue).orElse(0);
+	}
+
 
 
 }

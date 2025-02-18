@@ -24,19 +24,21 @@ public class Collect implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCollect;
 	
+	private String collectKey;
+	
 	@OneToOne()
 	@JoinColumn(name = "user_id")
 	private Users userId;
+	
+	@OneToOne()
+	@JoinColumn(name = "edress")
+	private Edress edress;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	private Boolean status;
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
-	
-	@OneToOne()
-	@JoinColumn(name = "edress")
-	private Edress edress;
 	
 	@OneToOne()
 	@JoinColumn(name = "created_by")
@@ -52,8 +54,6 @@ public class Collect implements Serializable{
 	public Collect() {
 	}
 
-	
-	
 	public Collect(Users userId, LocalDate date, Boolean status, Edress edress, List<CollectItens> itens) {
 		super();
 		this.userId = userId;
@@ -141,6 +141,14 @@ public class Collect implements Serializable{
 
 	public void setEdress(Edress edress) {
 		this.edress = edress;
+	}
+
+	public String getCollectKey() {
+		return collectKey;
+	}
+
+	public void setCollectKey(String collectKey) {
+		this.collectKey = collectKey;
 	}
 
 	@Override

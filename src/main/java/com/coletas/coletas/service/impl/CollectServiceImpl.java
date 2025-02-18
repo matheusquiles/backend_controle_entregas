@@ -2,6 +2,7 @@ package com.coletas.coletas.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 		try {
 			entity.setCreationDate(LocalDateTime.now());
 			entity.setCreatedBy(new Users(5)); //adicionado para testes
+			entity.setCollectKey(createKey(entity));
 			dao.save(entity);
 			
 			return true;
@@ -55,6 +57,37 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	public List<Collect> getByUserKeyAndDate(String userKey) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public Integer countCollectByUserAndDate(Integer userId, LocalDate date) {
+		try {
+			Integer result = dao.countCollectByUserAndDate(userId, date);
+			return ++result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public String createKey(Collect entity) {
+		try {
+			LocalDate date = entity.getDate();
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+			String formattedDate = date.format(formatter);
+
+			Integer userId = entity.getUserId().getIdUser();
+
+			Integer qtdCollects = countCollectByUserAndDate(userId, date);
+
+			return formattedDate + userId + qtdCollects;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

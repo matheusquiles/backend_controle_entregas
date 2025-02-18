@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,9 +32,7 @@ public class CollectItens implements Serializable{
 	
 	private Integer quantity;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private LocalDate date;
-	private Boolean deliverStatus;
+	private Boolean deliveryStatus;
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificatinDate;
 	
@@ -57,8 +53,7 @@ public class CollectItens implements Serializable{
 		this.collect = collect;
 		this.collectType = collectType;
 		this.quantity = quantity;
-		this.date = date;
-		this.deliverStatus = deliverStatus;
+		this.deliveryStatus = deliverStatus;
 	}
 
 	public Integer getIdCollectItens() {
@@ -93,20 +88,12 @@ public class CollectItens implements Serializable{
 		this.quantity = quantity;
 	}
 
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
 	public Boolean getDeliverStatus() {
-		return deliverStatus;
+		return deliveryStatus;
 	}
 
 	public void setDeliverStatus(Boolean deliverStatus) {
-		this.deliverStatus = deliverStatus;
+		this.deliveryStatus = deliverStatus;
 	}
 
 	public LocalDateTime getCreationDate() {
@@ -161,7 +148,7 @@ public class CollectItens implements Serializable{
 	@Override
 	public String toString() {
 		return "CollectItens [idCollectItens=" + idCollectItens + ", collect=" + collect + ", collectType="
-				+ collectType + ", quantity=" + quantity + ", date=" + date + ", deliverStatus=" + deliverStatus
+				+ collectType + ", quantity=" + quantity + ", deliverStatus=" + deliveryStatus
 				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificatinDate + ", createdBy="
 				+ createdBy + ", lastModificationBy=" + lastModificationBy + "]";
 	}

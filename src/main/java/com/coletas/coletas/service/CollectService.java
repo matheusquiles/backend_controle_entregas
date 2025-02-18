@@ -10,5 +10,6 @@ public interface CollectService extends BaseService<Collect, Integer> {
 	List<Collect> getByUserKeyAndDate(String userKey, LocalDate date);
 	List<Collect> getByUserKeyAndDate(String userKey);
 	Boolean saveCollect(Collect entity);
+	Integer countCollectByUserAndDate(Integer userId, LocalDate date);
 
 }

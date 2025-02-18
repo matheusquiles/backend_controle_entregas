@@ -14,17 +14,17 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
 
 	@Autowired
 	private CollectService service;
-	
-	
+
 	public CollectController(CollectServiceImpl service) {
 		super(service);
 	}
-	
+
 	@Override
 	public Boolean save(Collect entity) {
-		
+
 		try {
-			if(service.saveCollect(entity)) {
+			
+			if (service.saveCollect(entity)) {
 				return true;
 			} else {
 				return false;
@@ -33,7 +33,9 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to save collect: " + entity.getIdCollect(), e);
 		}
-		
+
 	}
+
+	
 
 }
