@@ -57,6 +57,13 @@ public class Users implements Serializable{
 		this.userType = userType;
 		this.permission = permission;
 	}
+	
+	
+	//criado para testes
+	public Users(Integer idUser) {
+		super();
+		this.idUser = idUser;
+	}
 
 	public Integer getIdUser() {
 		return idUser;

@@ -32,7 +32,10 @@ public class Collect implements Serializable{
 	private LocalDate date;
 	private Boolean status;
 	private LocalDateTime creationDate;
-	private LocalDateTime lastModificatinDate;
+	private LocalDateTime lastModificationDate;
+	
+	@OneToOne()
+	@JoinColumn(name = "edress")
 	private Edress edress;
 	
 	@OneToOne()
@@ -100,12 +103,12 @@ public class Collect implements Serializable{
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getLastModificatinDate() {
-		return lastModificatinDate;
+	public LocalDateTime getLastModificationDate() {
+		return lastModificationDate;
 	}
 
-	public void setLastModificatinDate(LocalDateTime lastModificatinDate) {
-		this.lastModificatinDate = lastModificatinDate;
+	public void setLastModificationDate(LocalDateTime lastModificatinDate) {
+		this.lastModificationDate = lastModificatinDate;
 	}
 
 	public Users getCreatedBy() {
@@ -160,7 +163,7 @@ public class Collect implements Serializable{
 	@Override
 	public String toString() {
 		return "Collect [idCollect=" + idCollect + ", userId=" + userId + ", date=" + date + ", status=" + status
-				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificatinDate + ", createdBy="
+				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificationDate + ", createdBy="
 				+ createdBy + ", lastModificationBy=" + lastModificationBy + ", itens=" + itens + "]";
 	}
 	

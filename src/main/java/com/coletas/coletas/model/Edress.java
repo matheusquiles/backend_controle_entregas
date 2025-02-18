@@ -29,6 +29,13 @@ private static final long serialVersionUID = 1L;
 		this.edress = edress;
 		this.status = status;
 	}
+	
+	
+	//criado para testes
+	public Edress(Integer idEdress) {
+		super();
+		this.idEdress = idEdress;
+	}
 
 	public Integer getIdEdress() {
 		return idEdress;
