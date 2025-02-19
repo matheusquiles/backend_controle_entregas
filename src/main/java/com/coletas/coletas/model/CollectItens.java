@@ -34,7 +34,7 @@ public class CollectItens implements Serializable{
 	
 	private Boolean deliveryStatus;
 	private LocalDateTime creationDate;
-	private LocalDateTime lastModificatinDate;
+	private LocalDateTime lastModificationDate;
 	
 	@OneToOne()
 	@JoinColumn(name = "created_by")
@@ -88,11 +88,11 @@ public class CollectItens implements Serializable{
 		this.quantity = quantity;
 	}
 
-	public Boolean getDeliverStatus() {
+	public Boolean getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
-	public void setDeliverStatus(Boolean deliverStatus) {
+	public void setDeliveryStatus(Boolean deliverStatus) {
 		this.deliveryStatus = deliverStatus;
 	}
 
@@ -104,12 +104,12 @@ public class CollectItens implements Serializable{
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getLastModificatinDate() {
-		return lastModificatinDate;
+	public LocalDateTime getLastModificationDate() {
+		return lastModificationDate;
 	}
 
-	public void setLastModificatinDate(LocalDateTime lastModificatinDate) {
-		this.lastModificatinDate = lastModificatinDate;
+	public void setlastmodificationdate(LocalDateTime lastModificatinDate) {
+		this.lastModificationDate = lastModificatinDate;
 	}
 
 	public Users getCreatedBy() {
@@ -149,7 +149,7 @@ public class CollectItens implements Serializable{
 	public String toString() {
 		return "CollectItens [idCollectItens=" + idCollectItens + ", collect=" + collect + ", collectType="
 				+ collectType + ", quantity=" + quantity + ", deliverStatus=" + deliveryStatus
-				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificatinDate + ", createdBy="
+				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificationDate + ", createdBy="
 				+ createdBy + ", lastModificationBy=" + lastModificationBy + "]";
 	}
 

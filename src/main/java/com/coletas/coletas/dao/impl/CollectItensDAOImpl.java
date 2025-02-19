@@ -21,5 +21,11 @@ public class CollectItensDAOImpl extends BaseDAOImpl<CollectItens, Integer> impl
 		return null;
 	}
 
+	@Override
+	public List<CollectItens> searchByCollectKey(String collectKey) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

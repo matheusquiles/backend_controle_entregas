@@ -21,17 +21,16 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	@Autowired
 	private CollectDAO dao;
 	
-
 	@Transactional
 	@Override
-	public Boolean saveCollect(Collect entity) {
+	public Collect saveCollect(Collect entity) {
 		try {
 			entity.setCreationDate(LocalDateTime.now());
 			entity.setCreatedBy(new Users(5)); //adicionado para testes
 			entity.setCollectKey(createKey(entity));
 			dao.save(entity);
 			
-			return true;
+			return entity;
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to save collect: " + entity.getIdCollect(), e);
 		}
@@ -42,9 +41,8 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	@Override
 	public void save(Collect entity) {
 		dao.save(entity);
-		
 	}
-
+	
 
 	@Override
 	public List<Collect> getByUserKeyAndDate(String userKey, LocalDate date) {
@@ -81,7 +79,7 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 
 			Integer userId = entity.getUserId().getIdUser();
 
-			Integer qtdCollects = countCollectByUserAndDate(userId, date);
+			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date);
 
 			return formattedDate + userId + qtdCollects;
 		} catch (Exception e) {

@@ -49,6 +49,20 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
         return result.map(Long::intValue).orElse(0);
 	}
 
+	@Override
+	public Collect getByCollectKey(String collectKey) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		StringBuilder hql = new StringBuilder();
+		hql.append("from Collect c ");
+		hql.append("where c.collectKey = :collectKey");
+
+		Query<Collect> query = currentSession.createQuery(hql.toString(), Collect.class);
+		query.setParameter("collectKey", collectKey);
+		Collect c = query.uniqueResult();
+		
+		return c != null ? c : null;
+	}
+
 
 
 }
