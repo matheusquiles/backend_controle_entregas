@@ -24,16 +24,21 @@ public class Collect implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idCollect;
 	
+	private String collectKey;
+	
 	@OneToOne()
 	@JoinColumn(name = "user_id")
 	private Users userId;
+	
+	@OneToOne()
+	@JoinColumn(name = "edress")
+	private Edress edress;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private LocalDate date;
 	private Boolean status;
 	private LocalDateTime creationDate;
-	private LocalDateTime lastModificatinDate;
-	private Edress edress;
+	private LocalDateTime lastModificationDate;
 	
 	@OneToOne()
 	@JoinColumn(name = "created_by")
@@ -49,8 +54,6 @@ public class Collect implements Serializable{
 	public Collect() {
 	}
 
-	
-	
 	public Collect(Users userId, LocalDate date, Boolean status, Edress edress, List<CollectItens> itens) {
 		super();
 		this.userId = userId;
@@ -100,12 +103,12 @@ public class Collect implements Serializable{
 		this.creationDate = creationDate;
 	}
 
-	public LocalDateTime getLastModificatinDate() {
-		return lastModificatinDate;
+	public LocalDateTime getLastModificationDate() {
+		return lastModificationDate;
 	}
 
-	public void setLastModificatinDate(LocalDateTime lastModificatinDate) {
-		this.lastModificatinDate = lastModificatinDate;
+	public void setLastModificationDate(LocalDateTime lastModificatinDate) {
+		this.lastModificationDate = lastModificatinDate;
 	}
 
 	public Users getCreatedBy() {
@@ -140,6 +143,14 @@ public class Collect implements Serializable{
 		this.edress = edress;
 	}
 
+	public String getCollectKey() {
+		return collectKey;
+	}
+
+	public void setCollectKey(String collectKey) {
+		this.collectKey = collectKey;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(userId);
@@ -160,7 +171,7 @@ public class Collect implements Serializable{
 	@Override
 	public String toString() {
 		return "Collect [idCollect=" + idCollect + ", userId=" + userId + ", date=" + date + ", status=" + status
-				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificatinDate + ", createdBy="
+				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificationDate + ", createdBy="
 				+ createdBy + ", lastModificationBy=" + lastModificationBy + ", itens=" + itens + "]";
 	}
 	
