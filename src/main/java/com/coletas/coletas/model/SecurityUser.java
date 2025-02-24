@@ -28,7 +28,7 @@ public class SecurityUser implements Serializable{
 	private String password;
 	
 //    private static final String ALGORITHM = "AES";
-    private static final String TRANSFORMATION = "AES";
+	 private static final String TRANSFORMATION = "AES/ECB/PKCS5Padding";
 
     public SecurityUser() {}
 
@@ -53,7 +53,7 @@ public class SecurityUser implements Serializable{
         this.idSecurityUser = idSecurityUser;
     }
 
-    public Users getUsers() {
+	public Users getUsers() {
         return users;
     }
 
@@ -62,7 +62,7 @@ public class SecurityUser implements Serializable{
     }
 
     public String getPassword() {
-        return decrypt(password);
+        return password;
     }
 
     public void setPassword(String password) {
