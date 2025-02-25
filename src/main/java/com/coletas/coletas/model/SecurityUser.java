@@ -66,7 +66,7 @@ public class SecurityUser implements Serializable{
     }
 
     public void setPassword(String password) {
-        this.password = encrypt(password);
+        this.password = password;
     }
 
     private String encrypt(String data) {

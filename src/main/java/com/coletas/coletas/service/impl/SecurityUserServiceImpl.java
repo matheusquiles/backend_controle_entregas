@@ -1,8 +1,6 @@
 package com.coletas.coletas.service.impl;
 
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -10,6 +8,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.config.KeyManager;
@@ -22,7 +25,7 @@ import com.coletas.coletas.service.SecurityUserService;
 import jakarta.transaction.Transactional;
 
 @Service
-public class SucurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integer> implements SecurityUserService {
+public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integer> implements SecurityUserService, UserDetailsService {
 
 	@Autowired
 	private SecurityUserDAO dao;
@@ -30,37 +33,26 @@ public class SucurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	@Autowired
 	private UserDAO userDAO;
 	
+	@Autowired
+	@Lazy
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	
 	@Transactional
 	@Override
 	public void save(Users entity) {
-		
-		Users u = userDAO.getUserByKey(entity.getUserKey());
-		
-		
-		try {
+	    Users u = userDAO.getUserByKey(entity.getUserKey());
 
-			// Generate and save the key if it does not exist
-			if (!Files.exists(Paths.get("encryption.key"))) {
-				SecretKey secretKey = KeyManager.generateKey();
-				KeyManager.saveKey(secretKey);
-			}
+	    try {
+	        SecurityUser securityUser = new SecurityUser();
+	        securityUser.setUsers(u);
+	        securityUser.setPassword(passwordEncoder.encode(entity.getPassword())); 
 
-			SecurityUser securityUser = new SecurityUser();
-			securityUser.setUsers(u);
-			securityUser.setPassword(entity.getPassword());
-
-//			// Print encrypted password
-			System.out.println("Encrypted Password: " + securityUser.getPassword());
-//
-//			// Decrypt and print the password
-			System.out.println("Decrypted Password: " + securityUser.getPassword());
-			
-			dao.save(securityUser);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
+	        dao.save(securityUser);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw new RuntimeException("Erro ao salvar usuário: " + e.getMessage(), e);
+	    }
 	}
 	
 	
@@ -98,7 +90,7 @@ public class SucurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	@Override
 	@Transactional
 	public Boolean login(Users user) {
-		return user.getPassword().equals(decryptPassword(user.getUserKey())) ? true : false;
+		 return passwordEncoder.matches(user.getPassword(), dao.getByUserKey(user.getUserKey()).getPassword());
 	}
 	
 	
@@ -106,6 +98,23 @@ public class SucurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	@Override
 	public void save(SecurityUser entity) {
 		
+	}
+
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		SecurityUser securityUser = dao.getByUserKey(username);
+		
+        if (securityUser.getUsers().getUserKey().equals(username)) {
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username(securityUser.getUsers().getUserKey())
+                    .password(securityUser.getUsers().getPassword())
+                    .roles("USER")
+                    .build();
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
 	}
 
 
