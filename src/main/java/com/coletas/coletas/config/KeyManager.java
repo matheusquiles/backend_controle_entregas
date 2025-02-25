@@ -1,6 +1,7 @@
 package com.coletas.coletas.config;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -15,17 +16,27 @@ public class KeyManager {
 
     public static SecretKey generateKey() throws Exception {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(ALGORITHM);
-        keyGenerator.init(256);
+        keyGenerator.init(128);
         return keyGenerator.generateKey();
     }
 
     public static void saveKey(SecretKey key) throws IOException {
         byte[] encodedKey = key.getEncoded();
         String encodedKeyString = Base64.getEncoder().encodeToString(encodedKey);
-        Files.write(Paths.get(KEY_FILE_PATH), encodedKeyString.getBytes());
+        Files.write(Paths.get(KEY_FILE_PATH), encodedKeyString.getBytes(StandardCharsets.UTF_8));
     }
 
     public static SecretKey loadKey() throws IOException {
+    	if (!Files.exists(Paths.get(KEY_FILE_PATH))) {
+            try {
+                SecretKey key = generateKey();
+                saveKey(key);
+                return key;
+            } catch (Exception e) {
+                throw new IOException("Erro ao gerar e salvar a chave AES", e);
+            }
+        }
+
         byte[] encodedKey = Files.readAllBytes(Paths.get(KEY_FILE_PATH));
         String encodedKeyString = new String(encodedKey);
         byte[] decodedKey = Base64.getDecoder().decode(encodedKeyString);

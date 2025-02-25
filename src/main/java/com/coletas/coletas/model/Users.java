@@ -59,6 +59,12 @@ public class Users implements Serializable{
 	}
 	
 	
+	public Users(String userKey, String password) {
+		super();
+		this.userKey = userKey;
+		this.password = password;
+	}
+
 	//criado para testes
 	public Users(Integer idUser) {
 		super();

@@ -43,7 +43,7 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 			throw new RuntimeException("Failed to save user: " + user.getUserKey(), e);
 		}
 		
-		
 	}
+	
 
 }
