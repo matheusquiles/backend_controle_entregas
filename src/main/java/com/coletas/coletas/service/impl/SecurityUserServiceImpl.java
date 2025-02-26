@@ -59,19 +59,7 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	    	System.out.println(("❌ Usuário não encontrado: " + user.getUserKey()));
 	        return false;
 	    }
-
-	    System.out.println("🔒 Comparando senhas para usuário: " + user.getUserKey());
-	    System.out.println("Senha informada: " + user.getPassword());
-	    System.out.println("Senha do banco: " + userFromDb.getPassword());
-
 	    boolean passwordMatches = passwordEncoder.matches(user.getPassword(), userFromDb.getPassword());
-
-	    if (passwordMatches) {
-	    	System.out.println("✅ Senha correta para usuário: " + user.getUserKey());
-	    } else {
-	    	System.out.println("❌ Senha incorreta para usuário: " + user.getUserKey());
-	    }
-
 	    return passwordMatches;
 	}
 	
@@ -88,11 +76,8 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 		SecurityUser securityUser = dao.getByUserKey(username);
 		
 		if (securityUser == null) {
-            System.out.println("❌ Usuário não encontrado: " + username);
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
-		
-		System.out.println("✅ Usuário encontrado: " + username);
 		
 		Users u = new Users(securityUser.getUsers().getUserKey(), securityUser.getPassword());
 		
