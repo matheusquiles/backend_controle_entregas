@@ -35,7 +35,7 @@ public class SecurityUser implements Serializable{
     public SecurityUser(Integer idSecurityUser, Users idUser, String password) {
         this.idSecurityUser = idSecurityUser;
         this.users = idUser;
-        this.password = encrypt(password);
+        this.password = password;
     }
 
     public Integer getIdSecurityUser() {
@@ -66,32 +66,8 @@ public class SecurityUser implements Serializable{
     }
 
     public void setPassword(String password) {
-        this.password = encrypt(password);
+        this.password = password;
     }
 
-    private String encrypt(String data) {
-        try {
-            SecretKey secretKey = KeyManager.loadKey();
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-            return Base64.getEncoder().encodeToString(encryptedBytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Error while encrypting: " + e.toString());
-        }
-    }
-
-    private String decrypt(String encryptedData) {
-        try {
-            SecretKey secretKey = KeyManager.loadKey();
-            Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decodedBytes = Base64.getDecoder().decode(encryptedData);
-            byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-            return new String(decryptedBytes);
-        } catch (Exception e) {
-            throw new RuntimeException("Error while decrypting: " + e.toString());
-        }
-    }
 
 }
