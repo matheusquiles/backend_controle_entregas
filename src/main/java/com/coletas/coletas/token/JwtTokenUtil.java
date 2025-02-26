@@ -1,19 +1,22 @@
 package com.coletas.coletas.token;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 @Component
 public class JwtTokenUtil {
 
-	private String secret = "your_secret_key"; // Use uma chave secreta segura
+	@Value("${jwt.secret}")
+	private String secret;
 
 	public String generateToken(String username) {
 		Map<String, Object> claims = new HashMap<>();
