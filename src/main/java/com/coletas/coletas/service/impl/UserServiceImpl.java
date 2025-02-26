@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.UserDAO;
+import com.coletas.coletas.dto.UserDTO;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;
@@ -63,6 +64,11 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	@Override
 	public Users getUserByKey(String userKey) {
 		return dao.getUserByKey(userKey);
+	}
+
+	@Override
+	public UserDTO getUserDTOByKey(String userKey) {
+		return dao.getUserDTOByKey(userKey);
 	}
 
 
