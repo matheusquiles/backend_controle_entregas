@@ -22,32 +22,25 @@ import com.coletas.coletas.token.JwtTokenUtil;
 public class AuthController {
 
 	@Autowired
-	private  AuthenticationManager authenticationManager;
+	private AuthenticationManager authenticationManager;
 	@Autowired
-    private  SecurityUserService securityUserService;
+	private SecurityUserService securityUserService;
 	@Autowired
-    private  JwtTokenUtil jwtTokenUtil;
+	private JwtTokenUtil jwtTokenUtil;
 
-    
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Users loginRequest) {
-        try {
-            System.out.println("🔒 Tentando autenticar usuário: " + loginRequest.getUserKey());
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody Users loginRequest) {
+		try {
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(loginRequest.getUserKey(), loginRequest.getPassword()));
+			final UserDetails userDetails = securityUserService.loadUserByUsername(loginRequest.getUserKey());
+			final String token = jwtTokenUtil.generateToken(userDetails.getUsername());
 
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserKey(), loginRequest.getPassword())  // <---- ERRO AQUI! 
-            );
-
-            System.out.println("✅ Autenticação bem-sucedida!");
-
-            final UserDetails userDetails = securityUserService.loadUserByUsername(loginRequest.getUserKey());
-            final String token = jwtTokenUtil.generateToken(userDetails.getUsername());
-
-            return ResponseEntity.ok(new AuthResponse(token));
-        } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no servidor");
-        }
-    }
+			return ResponseEntity.ok(new AuthResponse(token));
+		} catch (BadCredentialsException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no servidor");
+		}
+	}
 }
