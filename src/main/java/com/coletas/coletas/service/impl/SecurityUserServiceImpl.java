@@ -1,11 +1,6 @@
 package com.coletas.coletas.service.impl;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.IvParameterSpec;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -15,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.coletas.coletas.config.KeyManager;
 import com.coletas.coletas.dao.SecurityUserDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.model.SecurityUser;
@@ -56,41 +50,29 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	}
 	
 	
-	public String decryptPassword(String userKey) {
-	    try {
-	        SecurityUser securityUser = dao.getByUserKey(userKey);
-	        if (securityUser == null) {
-	            throw new RuntimeException("Usuário não encontrado: " + userKey);
-	        }
-
-	        String encryptedPassword = securityUser.getPassword().trim();
-	        System.out.println("Encrypted password (Base64): " + encryptedPassword);
-
-	        byte[] decodedBytes = Base64.getDecoder().decode(encryptedPassword);
-	        System.out.println("Decoded byte array length: " + decodedBytes.length);
-
-	        SecretKey secretKey = KeyManager.loadKey();
-	        System.out.println("Secret Key Length: " + secretKey.getEncoded().length * 8 + " bits");
-
-	        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-
-	        byte[] iv = new byte[16]; 
-	        IvParameterSpec ivSpec = new IvParameterSpec(iv);
-
-	        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-
-	        byte[] decryptedBytes = cipher.doFinal(decodedBytes);
-
-	        return new String(decryptedBytes, StandardCharsets.UTF_8);
-	    } catch (Exception e) {
-	        throw new RuntimeException("Erro ao descriptografar a senha: " + e.getMessage(), e);
-	    }
-	}
 
 	@Override
 	@Transactional
 	public Boolean login(Users user) {
-		 return passwordEncoder.matches(user.getPassword(), dao.getByUserKey(user.getUserKey()).getPassword());
+	    SecurityUser userFromDb = dao.getByUserKey(user.getUserKey());
+	    if (userFromDb == null) {
+	    	System.out.println(("❌ Usuário não encontrado: " + user.getUserKey()));
+	        return false;
+	    }
+
+	    System.out.println("🔒 Comparando senhas para usuário: " + user.getUserKey());
+	    System.out.println("Senha informada: " + user.getPassword());
+	    System.out.println("Senha do banco: " + userFromDb.getPassword());
+
+	    boolean passwordMatches = passwordEncoder.matches(user.getPassword(), userFromDb.getPassword());
+
+	    if (passwordMatches) {
+	    	System.out.println("✅ Senha correta para usuário: " + user.getUserKey());
+	    } else {
+	    	System.out.println("❌ Senha incorreta para usuário: " + user.getUserKey());
+	    }
+
+	    return passwordMatches;
 	}
 	
 	
@@ -100,21 +82,25 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 		
 	}
 
-
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		SecurityUser securityUser = dao.getByUserKey(username);
 		
-        if (securityUser.getUsers().getUserKey().equals(username)) {
-            return org.springframework.security.core.userdetails.User.builder()
-                    .username(securityUser.getUsers().getUserKey())
-                    .password(securityUser.getUsers().getPassword())
-                    .roles("USER")
-                    .build();
-        } else {
-            throw new UsernameNotFoundException("User not found");
+		if (securityUser == null) {
+            System.out.println("❌ Usuário não encontrado: " + username);
+            throw new UsernameNotFoundException("Usuário não encontrado");
         }
+		
+		System.out.println("✅ Usuário encontrado: " + username);
+		
+		Users u = new Users(securityUser.getUsers().getUserKey(), securityUser.getPassword());
+		
+		return new org.springframework.security.core.userdetails.User(
+				u.getUserKey(),
+				u.getPassword(),
+	            new ArrayList<>()
+	        );
 	}
 
 

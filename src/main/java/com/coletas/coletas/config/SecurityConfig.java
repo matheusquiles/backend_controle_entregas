@@ -3,12 +3,14 @@ package com.coletas.coletas.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,13 +26,10 @@ import com.coletas.coletas.token.JwtRequestFilter;
 public class SecurityConfig {
 
 	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	private final UserDetailsService jwtUserDetailsService;
 	private final JwtRequestFilter jwtRequestFilter;
 
-	public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
-			UserDetailsService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+	public SecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtRequestFilter jwtRequestFilter) {
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-		this.jwtUserDetailsService = jwtUserDetailsService;
 		this.jwtRequestFilter = jwtRequestFilter;
 	}
 
@@ -39,37 +38,29 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and()
-	    .csrf().disable()
-	    .authorizeRequests()
-	    .requestMatchers("/api/login", "/register",  "/**").permitAll()
-	    .anyRequest().authenticated()
-	    .and()
-	    .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
-	    .and()
-	    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		httpSecurity.cors().and().csrf().disable().authorizeRequests().requestMatchers("/auth/login", "/register", "/**")
+				.permitAll().anyRequest().authenticated().and().exceptionHandling()
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return httpSecurity.build();
 	}
-	
-	
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("https://select-data-site-6427d5c68d55.herokuapp.com"); // frontend URL
-		configuration.addAllowedOrigin("http://localhost:3000"); // URL local do frontend
-		configuration.addAllowedMethod("*"); // Permitir todos os métodos (GET, POST, etc.)
-		configuration.addAllowedHeader("*"); // Permitir todos os headers
-		configuration.setAllowCredentials(true); // Se você precisa passar cookies/autenticação
+		configuration.addAllowedOrigin("https://select-data-site-6427d5c68d55.herokuapp.com");
+		configuration.addAllowedOrigin("http://localhost:3000");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		configuration.setAllowCredentials(true);
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration); // Aplicar a todas as rotas
+		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
 
@@ -78,9 +69,12 @@ public class SecurityConfig {
 		return new CorsFilter(corsConfigurationSource());
 	}
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-			throws Exception {
-		return authenticationConfiguration.getAuthenticationManager();
-	}
+    @Bean
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(authProvider);
+    }
 }

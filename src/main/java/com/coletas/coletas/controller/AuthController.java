@@ -7,39 +7,40 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.token.AuthResponse;
 import com.coletas.coletas.token.JwtTokenUtil;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private  AuthenticationManager authenticationManager;
+	@Autowired
+    private  SecurityUserService securityUserService;
+	@Autowired
+    private  JwtTokenUtil jwtTokenUtil;
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
+    
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Users loginRequest) {
         try {
-            // Autenticar usuário com Spring Security
+            System.out.println("🔒 Tentando autenticar usuário: " + loginRequest.getUserKey());
+
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUserKey(), loginRequest.getPassword())
+                new UsernamePasswordAuthenticationToken(loginRequest.getUserKey(), loginRequest.getPassword())  // <---- ERRO AQUI! 
             );
 
-            // Buscar usuário e gerar token
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUserKey());
+            System.out.println("✅ Autenticação bem-sucedida!");
+
+            final UserDetails userDetails = securityUserService.loadUserByUsername(loginRequest.getUserKey());
             final String token = jwtTokenUtil.generateToken(userDetails.getUsername());
 
             return ResponseEntity.ok(new AuthResponse(token));
