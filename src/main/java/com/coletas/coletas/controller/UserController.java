@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.dto.UserDTO;
+import com.coletas.coletas.model.Permission;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;
@@ -15,27 +16,26 @@ import com.coletas.coletas.service.impl.UserServiceImpl;
 @RestController
 @RequestMapping("/api/users")
 public class UserController extends BaseControllerImpl<Users, Integer> {
-	
+
 	@Autowired
 	private UserService service;
-	
+
 	@Autowired
 	private SecurityUserService securityUserService;
-	
+
 	public UserController(UserServiceImpl service) {
 		super(service);
 	}
-	
+
 	@Override
 	public Boolean save(Users user) {
-		
-		if(service.searchUser(user.getUserKey())) {
+
+		if (service.searchUser(user.getUserKey())) {
 			System.err.println("User already exists: " + user.getUserKey());
 			return false;
 		}
-		
 		try {
-			if(service.saveUser(user)) {
+			if (service.saveUser(user)) {
 				securityUserService.save(user);
 				return true;
 			} else {
@@ -45,13 +45,12 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to save user: " + user.getUserKey(), e);
 		}
-		
+
 	}
-	
-    @GetMapping("/searchUser/{userKey}")
-    public UserDTO getUserDTOByKey(@PathVariable String userKey) {
-    	return service.getUserDTOByKey(userKey);
-    }
-	
+
+	@GetMapping("/searchUser/{userKey}")
+	public UserDTO getUserDTOByKey(@PathVariable String userKey) {
+		return service.getUserDTOByKey(userKey);
+	}
 
 }

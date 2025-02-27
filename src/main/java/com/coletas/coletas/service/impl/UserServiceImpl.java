@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.UserDTO;
+import com.coletas.coletas.model.Permission;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;
@@ -52,8 +53,20 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	@Override
 	public Boolean saveUser(Users user) {
 		try {
-			user.setCreationDate(LocalDateTime.now());
-			dao.save(user);
+			
+			Users u = new Users();
+			u.setCpf(user.getCpf());
+			u.setEmail(user.getEmail());
+			u.setName(user.getName());
+			u.setUserKey(user.getUserKey());
+			u.setUserType(user.getUserType());
+			u.setCreationDate(LocalDateTime.now());
+			//adicionando essa permissão manualmente para testes do frontend. Eventualmente cada usuário poderá ter permissões distinta
+			u.setPermission(new Permission(user.getUserType().getIdUserType()));
+			//também adicionando para testes
+			u.setStatus(true);
+			u.setPassword("");
+			dao.save(u);
 			return true;
 
 		} catch (Exception e) {
