@@ -24,7 +24,7 @@ public class CreateKey {
 
 			Integer userId = entity.getUserId().getIdUser();
 
-			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date);
+			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date) +1;
 
 			return formattedDate + userId + qtdCollects;
 		} catch (Exception e) {

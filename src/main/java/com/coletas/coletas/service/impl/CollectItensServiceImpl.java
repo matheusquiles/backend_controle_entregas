@@ -11,7 +11,6 @@ import com.coletas.coletas.dao.CollectDAO;
 import com.coletas.coletas.dao.CollectItensDAO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.CollectItens;
-import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.CollectItensService;
 
 import jakarta.transaction.Transactional;
@@ -47,7 +46,11 @@ public class CollectItensServiceImpl extends BaseServiceImpl<CollectItens, Integ
 			for (CollectItens collectItens : collect.getItens()) {
 				collectItens.setCollect(c);
 				collectItens.setCreationDate(LocalDateTime.now());
-				collectItens.setCreatedBy(new Users(5)); // adicionado para testes
+				collectItens.setCreatedBy(collect.getUserId()); 
+				collectItens.setValuePerUnitCollect(new Double(20));
+				collectItens.setTotalToReceave(collectItens.getValuePerUnitCollect()*collectItens.getQuantity());
+				collectItens.setValueToPayPerUnit(new Double (12));
+				collectItens.setTotalValueToPay(collectItens.getValueToPayPerUnit()*collectItens.getQuantity());
 
 				try {
 					dao.save(collectItens);

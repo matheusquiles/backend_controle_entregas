@@ -36,6 +36,12 @@ public class CollectItens implements Serializable{
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
+	private Double valuePerUnitCollect;
+	private Double totalToReceive;
+	private Double valueToPayPerUnit;
+	private Double totalValueToPay;
+	
+	
 	@OneToOne()
 	@JoinColumn(name = "created_by")
 	private Users createdBy;
@@ -132,6 +138,48 @@ public class CollectItens implements Serializable{
 	public int hashCode() {
 		return Objects.hash(idCollectItens);
 	}
+	
+	
+
+	public Double getValuePerUnitCollect() {
+		return valuePerUnitCollect;
+	}
+
+	public Double getTotalToReceive() {
+		return totalToReceive;
+	}
+
+	public void setTotalToReceive(Double totalToReceive) {
+		this.totalToReceive = totalToReceive;
+	}
+
+	public void setValuePerUnitCollect(Double valuePerUnitCollect) {
+		this.valuePerUnitCollect = valuePerUnitCollect;
+	}
+
+	public void setTotalToReceave(Double totalToReceave) {
+		this.totalToReceive = totalToReceave;
+	}
+
+	public Double getValueToPayPerUnit() {
+		return valueToPayPerUnit;
+	}
+
+	public void setValueToPayPerUnit(Double valueToPayPerUnit) {
+		this.valueToPayPerUnit = valueToPayPerUnit;
+	}
+
+	public Double getTotalValueToPay() {
+		return totalValueToPay;
+	}
+
+	public void setTotalValueToPay(Double totalValueToPay) {
+		this.totalValueToPay = totalValueToPay;
+	}
+
+	public void setLastModificationDate(LocalDateTime lastModificationDate) {
+		this.lastModificationDate = lastModificationDate;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -148,10 +196,13 @@ public class CollectItens implements Serializable{
 	@Override
 	public String toString() {
 		return "CollectItens [idCollectItens=" + idCollectItens + ", collect=" + collect + ", collectType="
-				+ collectType + ", quantity=" + quantity + ", deliverStatus=" + deliveryStatus
-				+ ", creationDate=" + creationDate + ", lastModificatinDate=" + lastModificationDate + ", createdBy="
-				+ createdBy + ", lastModificationBy=" + lastModificationBy + "]";
+				+ collectType + ", quantity=" + quantity + ", deliveryStatus=" + deliveryStatus + ", creationDate="
+				+ creationDate + ", lastModificationDate=" + lastModificationDate + ", valuePerUnitCollect="
+				+ valuePerUnitCollect + ", totalToReceave=" + totalToReceive + ", valueToPayPerUnit="
+				+ valueToPayPerUnit + ", totalValueToPay=" + totalValueToPay + ", createdBy=" + createdBy
+				+ ", lastModificationBy=" + lastModificationBy + "]";
 	}
+
 
 	
 	

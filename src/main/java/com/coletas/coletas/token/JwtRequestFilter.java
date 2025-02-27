@@ -33,14 +33,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         final String requestTokenHeader = request.getHeader("Authorization");
-        logger.info("🔍 Authorization Header recebido: " + requestTokenHeader);
 
         String username = null;
         String jwtToken = null;
 
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-            logger.info("🔑 Extraído Token JWT: " + jwtToken);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
                 logger.info("👤 Usuário extraído do token: " + username);
@@ -49,9 +47,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 logger.error("❌ JWT Token expirado");
             }
-        } else {
-            logger.warn("⚠️ JWT Token não começa com 'Bearer '");
-        }
+        } 
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = securityUserService.loadUserByUsername(username);

@@ -1,20 +1,28 @@
 package com.coletas.coletas.dao.impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.CollectDAO;
+import com.coletas.coletas.dao.CollectItensDAO;
+import com.coletas.coletas.dto.CollectDTO;
 import com.coletas.coletas.model.Collect;
 
 @Repository
 public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements CollectDAO {
 
+	@Autowired
+	private CollectItensDAO collectItensDAO;
+	
+	
 	public CollectDAOImpl() {
 		super(Collect.class);
 	}
@@ -40,13 +48,13 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		hql.append("inner join co.userId user ");
 		hql.append("where co.date = :date ");
 		hql.append("and user.idUser = :idUser ");
-		
+
 		Query<Long> query = currentSession.createQuery(hql.toString(), Long.class);
 		query.setParameter("date", date);
 		query.setParameter("idUser", idUser);
 
-        Optional<Long> result = query.uniqueResultOptional();
-        return result.map(Long::intValue).orElse(0);
+		Optional<Long> result = query.uniqueResultOptional();
+		return result.map(Long::intValue).orElse(0);
 	}
 
 	@Override
@@ -59,10 +67,53 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		Query<Collect> query = currentSession.createQuery(hql.toString(), Collect.class);
 		query.setParameter("collectKey", collectKey);
 		Collect c = query.uniqueResult();
-		
+
 		return c != null ? c : null;
 	}
 
+	private StringBuilder searchDTO() {
 
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new com.coletas.coletas.dto.CollectDTO(");
+		hql.append(" co.idCollect idCollect");
+		hql.append(" , co.collectKey collectKey");
+		hql.append(" , us.name collectUser");
+		hql.append(" , ed.edress edress");
+		hql.append(" , ed.description edressDescription");
+		hql.append(" , co.date date");
+		hql.append(" , co.status status");
+		hql.append(" ) ");
+
+		hql.append(" From Collect co ");
+		hql.append(" inner join co.userId us ");
+		hql.append(" inner join co.edress ed ");
+
+		hql.append(" where 1=1 ");
+
+		return hql;
+	}
+
+	@Override
+	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		StringBuilder hql = searchDTO();
+
+		hql.append(" and LOWER(us.userKey) = LOWER(:userKey) ");
+		hql.append(" and co.date >= :initialDate ");
+		hql.append(" and co.date <= :finalDate ");
+
+		Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
+		query.setParameter("userKey", userKey);
+		query.setParameter("initialDate", initialDate);
+		query.setParameter("finalDate", finalDate);
+		
+		List<CollectDTO> resultList = query.getResultList();
+		
+		for (CollectDTO collectDTO : resultList) {
+			collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect()));
+		}
+
+		return resultList.isEmpty() ? new ArrayList<>() : resultList;
+	}
 
 }

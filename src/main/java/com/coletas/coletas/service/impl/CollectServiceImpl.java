@@ -2,16 +2,16 @@ package com.coletas.coletas.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.CollectDAO;
+import com.coletas.coletas.dto.CollectDTO;
 import com.coletas.coletas.model.Collect;
-import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.CollectService;
+import com.coletas.coletas.util.CreateKey;
 
 import jakarta.transaction.Transactional;
 
@@ -21,13 +21,16 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	@Autowired
 	private CollectDAO dao;
 	
+	@Autowired
+	private CreateKey key;
+	
 	@Transactional
 	@Override
 	public Collect saveCollect(Collect entity) {
 		try {
 			entity.setCreationDate(LocalDateTime.now());
-			entity.setCreatedBy(new Users(5)); //adicionado para testes
-			entity.setCollectKey(createKey(entity));
+			entity.setCreatedBy(entity.getUserId());  
+			entity.setCollectKey(key.createKey(entity));
 			dao.save(entity);
 			
 			return entity;
@@ -69,23 +72,29 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 			return null;
 		}
 	}
-	
-	public String createKey(Collect entity) {
-		try {
-			LocalDate date = entity.getDate();
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-			String formattedDate = date.format(formatter);
 
-			Integer userId = entity.getUserId().getIdUser();
-
-			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date);
-
-			return formattedDate + userId + qtdCollects;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	@Override
+	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate) {
+		return dao.getDTOByUserAndDate(userKey, initialDate, finalDate);
 	}
+	
+//	public String createKey(Collect entity) {
+//		try {
+//			LocalDate date = entity.getDate();
+//
+//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+//			String formattedDate = date.format(formatter);
+//
+//			Integer userId = entity.getUserId().getIdUser();
+//
+//			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date) +1;
+//
+//			return formattedDate + userId + qtdCollects;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return null;
+//		}
+//	}
 
 }

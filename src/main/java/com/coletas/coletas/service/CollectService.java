@@ -3,6 +3,7 @@ package com.coletas.coletas.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.coletas.coletas.dto.CollectDTO;
 import com.coletas.coletas.model.Collect;
 
 public interface CollectService extends BaseService<Collect, Integer> {
@@ -11,5 +12,6 @@ public interface CollectService extends BaseService<Collect, Integer> {
 	List<Collect> getByUserKeyAndDate(String userKey);
 	Collect saveCollect(Collect entity);
 	Integer countCollectByUserAndDate(Integer userId, LocalDate date);
+	List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate);
 
 }
