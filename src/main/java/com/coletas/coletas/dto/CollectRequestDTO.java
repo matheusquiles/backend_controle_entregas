@@ -3,7 +3,7 @@ package com.coletas.coletas.dto;
 import java.time.LocalDate;
 
 public class CollectRequestDTO {
-	private String userKey;
+	private Integer idUser;
     private LocalDate initialDate;
     private LocalDate finalDate;
     private Integer idSupervisor;
@@ -12,40 +12,42 @@ public class CollectRequestDTO {
     public CollectRequestDTO() {
 	}
 
-    public String getUserKey() {
-        return userKey;
-    }
     
-    public CollectRequestDTO(String userKey, LocalDate initialDate, LocalDate finalDate) {
+    public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate) {
 		super();
-		this.userKey = userKey;
+		this.idUser = idUser;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
 	}
     
-	public CollectRequestDTO(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idEdress) {
+	public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idEdress) {
 		super();
-		this.userKey = userKey;
+		this.idUser = idUser;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
 		this.idEdress = idEdress;
 	}
 
-	public CollectRequestDTO(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
+	public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
 			Integer idEdress) {
 		super();
-		this.userKey = userKey;
+		this.idUser = idUser;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
 		this.idSupervisor = idSupervisor;
 		this.idEdress = idEdress;
 	}
 
-	public void setUserKey(String userKey) {
-        this.userKey = userKey;
-    }
+    public Integer getIdUser() {
+		return idUser;
+	}
 
-    public LocalDate getInitialDate() {
+	public void setIdUser(Integer idUser) {
+		this.idUser = idUser;
+	}
+
+
+	public LocalDate getInitialDate() {
         return initialDate;
     }
 
