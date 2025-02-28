@@ -41,7 +41,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             jwtToken = requestTokenHeader.substring(7);
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
-                logger.info("👤 Usuário extraído do token: " + username);
             } catch (IllegalArgumentException e) {
                 logger.error("❌ Não foi possível obter o JWT Token");
             } catch (ExpiredJwtException e) {
@@ -51,14 +50,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = securityUserService.loadUserByUsername(username);
-            logger.info("✅ UserDetails carregado para: " + userDetails.getUsername());
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                logger.info("🔓 Autenticação configurada no SecurityContext");
             } else {
                 logger.warn("🚫 Token inválido para usuário: " + username);
             }

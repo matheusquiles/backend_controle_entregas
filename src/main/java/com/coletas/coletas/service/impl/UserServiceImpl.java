@@ -1,6 +1,7 @@
 package com.coletas.coletas.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,6 +83,11 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	@Override
 	public UserDTO getUserDTOByKey(String userKey) {
 		return dao.getUserDTOByKey(userKey);
+	}
+
+	@Override
+	public List<UserDTO> getUserDTOByRole() {
+		return dao.getUserDTOByRole();
 	}
 
 

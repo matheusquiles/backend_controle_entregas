@@ -21,8 +21,7 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 
 	@Autowired
 	private CollectItensDAO collectItensDAO;
-	
-	
+
 	public CollectDAOImpl() {
 		super(Collect.class);
 	}
@@ -71,7 +70,7 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		return c != null ? c : null;
 	}
 
-	private StringBuilder searchDTO() {
+	private StringBuilder searchDTO(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress) {
 
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.CollectDTO(");
@@ -90,22 +89,33 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 
 		hql.append(" where 1=1 ");
 
+		hql.append(" and LOWER(us.userKey) = LOWER(:userKey) ");
+		hql.append(" and co.date >= :initialDate ");
+		hql.append(" and co.date <= :finalDate ");
+		
+		if(idEdress != null) {
+			hql.append(" and ed.idEdress = :idEdress ");
+		}
+		
 		return hql;
 	}
 
 	@Override
-	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate) {
+	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		StringBuilder hql = searchDTO();
-
-		hql.append(" and LOWER(us.userKey) = LOWER(:userKey) ");
-		hql.append(" and co.date >= :initialDate ");
-		hql.append(" and co.date <= :finalDate ");
+		StringBuilder hql = searchDTO(userKey, initialDate, finalDate, idSupervidor, idEdress);
 
 		Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
 		query.setParameter("userKey", userKey);
 		query.setParameter("initialDate", initialDate);
 		query.setParameter("finalDate", finalDate);
+		
+		if(idSupervidor != null ) {
+			query.setParameter("userKey", userKey);
+		}
+		if(idEdress != null ) {
+			query.setParameter("idEdress", idEdress);
+		}
 		
 		List<CollectDTO> resultList = query.getResultList();
 		

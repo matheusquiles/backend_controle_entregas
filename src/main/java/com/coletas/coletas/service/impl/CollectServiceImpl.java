@@ -75,8 +75,8 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 
 
 	@Override
-	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate) {
-		return dao.getDTOByUserAndDate(userKey, initialDate, finalDate);
+	public List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress) {
+		return dao.getDTOByUserAndDate(userKey, initialDate, finalDate, idSupervidor, idEdress);
 	}
 	
 //	public String createKey(Collect entity) {

@@ -12,6 +12,6 @@ public interface CollectDAO extends BaseDAO<Collect, Integer>{
 	List<Collect> getByUserKeyAndDate(String userKey);
 	Integer countCollectByUserAndDate(Integer userId, LocalDate date);
 	Collect getByCollectKey(String collectKey);
-	List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate);
+	List<CollectDTO> getDTOByUserAndDate(String userKey, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress);
 	
 }

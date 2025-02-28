@@ -1,5 +1,6 @@
 package com.coletas.coletas.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.hibernate.Session;
@@ -79,6 +80,19 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 		hql.append(" where 1=1 ");
 
 		return hql;
+	}
+
+	@Override
+	public List<UserDTO> getUserDTOByRole() {
+		Session currentSession = entityManager.unwrap(Session.class);
+		StringBuilder hql = searchDTO();
+		hql.append(" and ut.idUserType = 3 ");
+		
+		Query<UserDTO> query = currentSession.createQuery(hql.toString(), UserDTO.class);
+		//settando manualmente a busca por motoboy, que é id 3. no futuro isso será melhorado
+		List<UserDTO> resultList = query.getResultList();
+		
+		return resultList;
 	}
 
 }

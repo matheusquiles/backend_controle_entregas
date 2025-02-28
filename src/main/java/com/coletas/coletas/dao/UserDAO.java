@@ -1,5 +1,6 @@
 package com.coletas.coletas.dao;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.coletas.coletas.dto.UserDTO;
@@ -11,4 +12,5 @@ public interface UserDAO extends BaseDAO<Users, Integer> {
 	Boolean getByUserKey(String userKey);
 	Users getUserByKey(String userkey);
 	UserDTO getUserDTOByKey(String userKey);
+	List<UserDTO> getUserDTOByRole();
 }
