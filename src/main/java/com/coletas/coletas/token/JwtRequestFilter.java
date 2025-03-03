@@ -53,9 +53,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                
+                // Opcional: logar a role para debug
+                String role = jwtTokenUtil.getClaimFromToken(jwtToken, claims -> claims.get("role", String.class));
+                logger.info("Usuário: " + username + " | Role: " + role);
             } else {
                 logger.warn("🚫 Token inválido para usuário: " + username);
             }

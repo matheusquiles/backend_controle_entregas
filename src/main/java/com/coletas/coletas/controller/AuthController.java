@@ -34,7 +34,7 @@ public class AuthController {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUserKey(), loginRequest.getPassword()));
 			final UserDetails userDetails = securityUserService.loadUserByUsername(loginRequest.getUserKey());
-			final String token = jwtTokenUtil.generateToken(userDetails.getUsername());
+			final String token = jwtTokenUtil.generateToken(userDetails); // Passe o UserDetails completo
 
 			return ResponseEntity.ok(new AuthResponse(token));
 		} catch (BadCredentialsException e) {
@@ -43,5 +43,5 @@ public class AuthController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro no servidor");
 		}
 	}
-	
+
 }
