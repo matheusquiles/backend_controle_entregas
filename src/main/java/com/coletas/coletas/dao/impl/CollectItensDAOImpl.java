@@ -36,7 +36,8 @@ public class CollectItensDAOImpl extends BaseDAOImpl<CollectItens, Integer> impl
 
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.CollectItensDTO(");
-		hql.append(" ct.description collectType");
+		hql.append(" ci.idCollectItens idCollectItens");
+		hql.append(", ct.description collectType");
 		hql.append(", ci.quantity quantity");
 		hql.append(", ci.deliveryStatus deliveryStatus");
 		hql.append(", ci.valuePerUnitCollect valuePerUnitCollect");

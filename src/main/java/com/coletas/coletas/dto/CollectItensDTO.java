@@ -2,6 +2,7 @@ package com.coletas.coletas.dto;
 
 public class CollectItensDTO {
 	
+	private Integer idCollectItens;
 	private String collectType;
 	private Integer quantity;
 	private String deliveryStatus;
@@ -13,9 +14,10 @@ public class CollectItensDTO {
 	public CollectItensDTO() {
 	}
 	
-	public CollectItensDTO(String collectType, Integer quantity, String deliveryStatus, Double valuePerUnitCollect,
+	public CollectItensDTO(Integer idCollectItem, String collectType, Integer quantity, String deliveryStatus, Double valuePerUnitCollect,
 			Double totalToReceive, Double valueToPayPerUnit, Double totalValueToPay) {
 		super();
+		this.idCollectItens = idCollectItem;
 		this.collectType = collectType;
 		this.quantity = quantity;
 		this.deliveryStatus = deliveryStatus;
@@ -23,6 +25,16 @@ public class CollectItensDTO {
 		this.totalToReceive = totalToReceive;
 		this.valueToPayPerUnit = valueToPayPerUnit;
 		this.totalValueToPay = totalValueToPay;
+	}
+	
+	
+
+	public Integer getIdCollectItens() {
+		return idCollectItens;
+	}
+
+	public void setIdCollectItens(Integer idCollectItem) {
+		this.idCollectItens = idCollectItem;
 	}
 
 	public String getCollectType() {
