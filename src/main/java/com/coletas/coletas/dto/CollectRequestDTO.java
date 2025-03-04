@@ -8,6 +8,7 @@ public class CollectRequestDTO {
     private LocalDate finalDate;
     private Integer idSupervisor;
     private Integer idEdress;
+    private String deliveryStatus;
     
     public CollectRequestDTO() {
 	}
@@ -37,8 +38,21 @@ public class CollectRequestDTO {
 		this.idSupervisor = idSupervisor;
 		this.idEdress = idEdress;
 	}
+	
 
-    public Integer getIdUser() {
+    public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
+			Integer idEdress, String deliveryStatus) {
+		super();
+		this.idUser = idUser;
+		this.initialDate = initialDate;
+		this.finalDate = finalDate;
+		this.idSupervisor = idSupervisor;
+		this.idEdress = idEdress;
+		this.deliveryStatus = deliveryStatus;
+	}
+
+
+	public Integer getIdUser() {
 		return idUser;
 	}
 
@@ -77,6 +91,16 @@ public class CollectRequestDTO {
 
 	public void setIdEdress(Integer idEdress) {
 		this.idEdress = idEdress;
+	}
+
+
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
 	}
     
     

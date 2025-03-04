@@ -49,7 +49,7 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
     @PostMapping("/getDTO")
 	public List<CollectDTO> getDTOByUserAndDate(@RequestBody CollectRequestDTO request){
 		try {
-			List<CollectDTO> list = service.getDTOByUserAndDate(request.getIdUser(), request.getInitialDate(), request.getFinalDate(), request.getIdSupervisor(), request.getIdEdress());
+			List<CollectDTO> list = service.getDTOByUserAndDate(request.getIdUser(), request.getInitialDate(), request.getFinalDate(), request.getIdSupervisor(), request.getIdEdress(), request.getDeliveryStatus());
 			return list;
 			
 		} catch (Exception e) {

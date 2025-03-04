@@ -32,7 +32,7 @@ public class CollectItensDAOImpl extends BaseDAOImpl<CollectItens, Integer> impl
 	}
 	
 	
-	private StringBuilder searchDTO() {
+	private StringBuilder searchDTO(String deliveryStatus) {
 
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.CollectItensDTO(");
@@ -50,19 +50,27 @@ public class CollectItensDAOImpl extends BaseDAOImpl<CollectItens, Integer> impl
 		hql.append(" inner join ci.collectType ct ");
 		
 		hql.append(" where 1=1 ");
+		
+		if (deliveryStatus != null && !deliveryStatus.equals("todos")) {
+		    hql.append(" and ci.deliveryStatus =:deliveryStatus ");
+		}
 
 		return hql;
 	}
 
 	@Override
-	public List<CollectItensDTO> searchDTOByIdCollect(Integer idCollect) {
+	public List<CollectItensDTO> searchDTOByIdCollect(Integer idCollect, String deliveryStatus) {
 		Session currentSession = entityManager.unwrap(Session.class);
 
-		StringBuilder hql = searchDTO();
+		StringBuilder hql = searchDTO(deliveryStatus);
 		hql.append(" and ci.collect.id = :idCollect ");
+		
 		
 		Query<CollectItensDTO> list = currentSession.createQuery(hql.toString(), CollectItensDTO.class);
 		list.setParameter("idCollect", idCollect);
+		if (deliveryStatus != null && !deliveryStatus.equals("todos")) {
+			list.setParameter("deliveryStatus", deliveryStatus);
+		}
 		List<CollectItensDTO> colletItens = list.getResultList();
 		
 		return colletItens.isEmpty() ? new ArrayList<>() : colletItens;

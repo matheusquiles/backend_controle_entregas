@@ -12,6 +12,7 @@ import com.coletas.coletas.dao.CollectItensDAO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.CollectItens;
 import com.coletas.coletas.service.CollectItensService;
+import com.coletas.coletas.util.DeliveryStatus;
 
 import jakarta.transaction.Transactional;
 
@@ -51,6 +52,7 @@ public class CollectItensServiceImpl extends BaseServiceImpl<CollectItens, Integ
 				collectItens.setTotalToReceave(collectItens.getValuePerUnitCollect()*collectItens.getQuantity());
 				collectItens.setValueToPayPerUnit(new Double (12));
 				collectItens.setTotalValueToPay(collectItens.getValueToPayPerUnit()*collectItens.getQuantity());
+				collectItens.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
 
 				try {
 					dao.save(collectItens);

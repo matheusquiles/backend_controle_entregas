@@ -101,7 +101,7 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 	}
 
 	@Override
-	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress) {
+	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress, String deliveryStatus) {
 		Session currentSession = entityManager.unwrap(Session.class);
 		StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
 
@@ -120,7 +120,7 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		List<CollectDTO> resultList = query.getResultList();
 		
 		for (CollectDTO collectDTO : resultList) {
-			collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect()));
+			collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect(), deliveryStatus));
 		}
 
 		return resultList.isEmpty() ? new ArrayList<>() : resultList;

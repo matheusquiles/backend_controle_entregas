@@ -32,7 +32,7 @@ public class CollectItens implements Serializable{
 	
 	private Integer quantity;
 	
-	private Boolean deliveryStatus;
+	private String deliveryStatus;
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
@@ -54,7 +54,7 @@ public class CollectItens implements Serializable{
 	}
 
 	public CollectItens(Collect collect, CollectType collectType, Integer quantity, LocalDate date,
-			Boolean deliverStatus) {
+			String deliverStatus) {
 		super();
 		this.collect = collect;
 		this.collectType = collectType;
@@ -94,11 +94,11 @@ public class CollectItens implements Serializable{
 		this.quantity = quantity;
 	}
 
-	public Boolean getDeliveryStatus() {
+	public String getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
-	public void setDeliveryStatus(Boolean deliverStatus) {
+	public void setDeliveryStatus(String deliverStatus) {
 		this.deliveryStatus = deliverStatus;
 	}
 

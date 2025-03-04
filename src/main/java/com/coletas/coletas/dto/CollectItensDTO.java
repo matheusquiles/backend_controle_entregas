@@ -4,7 +4,7 @@ public class CollectItensDTO {
 	
 	private String collectType;
 	private Integer quantity;
-	private Boolean deliveryStatus;
+	private String deliveryStatus;
 	private Double valuePerUnitCollect;
 	private Double totalToReceive;
 	private Double valueToPayPerUnit;
@@ -13,7 +13,7 @@ public class CollectItensDTO {
 	public CollectItensDTO() {
 	}
 	
-	public CollectItensDTO(String collectType, Integer quantity, Boolean deliveryStatus, Double valuePerUnitCollect,
+	public CollectItensDTO(String collectType, Integer quantity, String deliveryStatus, Double valuePerUnitCollect,
 			Double totalToReceive, Double valueToPayPerUnit, Double totalValueToPay) {
 		super();
 		this.collectType = collectType;
@@ -41,11 +41,11 @@ public class CollectItensDTO {
 		this.quantity = quantity;
 	}
 
-	public Boolean getDeliveryStatus() {
+	public String getDeliveryStatus() {
 		return deliveryStatus;
 	}
 
-	public void setDeliveryStatus(Boolean deliveryStatus) {
+	public void setDeliveryStatus(String deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
 

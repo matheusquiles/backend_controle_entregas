@@ -9,6 +9,6 @@ public interface CollectItensDAO extends BaseDAO<CollectItens, Integer> {
 	
 	List<CollectItens> serchByCollectId(Integer idCollect);
 	List<CollectItens> searchByCollectKey(String collectKey);
-	List<CollectItensDTO> searchDTOByIdCollect (Integer idCollect);
+	List<CollectItensDTO> searchDTOByIdCollect (Integer idCollect, String deliveryStatus);
 
 }
