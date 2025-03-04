@@ -89,9 +89,12 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 
 		hql.append(" where 1=1 ");
 
-		hql.append(" and us.idUser = :idUser ");
 		hql.append(" and co.date >= :initialDate ");
 		hql.append(" and co.date <= :finalDate ");
+		
+		if(idUser != null) {
+			hql.append(" and us.idUser = :idUser ");
+		}
 		
 		if(idEdress != null) {
 			hql.append(" and ed.idEdress = :idEdress ");
@@ -106,9 +109,12 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
 
 		Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
-		query.setParameter("idUser", idUser);
 		query.setParameter("initialDate", initialDate);
 		query.setParameter("finalDate", finalDate);
+		
+		if(idUser != null) {
+			query.setParameter("idUser", idUser);
+		}
 		
 		if(idSupervidor != null ) {
 			query.setParameter("idUser", idUser);
