@@ -8,8 +8,6 @@ public class CollectItensDTO {
 	private String deliveryStatus;
 	private Double valuePerUnitCollect;
 	private Double totalToReceive;
-	private Double valueToPayPerUnit;
-	private Double totalValueToPay;
 	
 	public CollectItensDTO() {
 	}
@@ -23,8 +21,6 @@ public class CollectItensDTO {
 		this.deliveryStatus = deliveryStatus;
 		this.valuePerUnitCollect = valuePerUnitCollect;
 		this.totalToReceive = totalToReceive;
-		this.valueToPayPerUnit = valueToPayPerUnit;
-		this.totalValueToPay = totalValueToPay;
 	}
 	
 	
@@ -77,22 +73,6 @@ public class CollectItensDTO {
 		this.totalToReceive = totalToReceive;
 	}
 
-	public Double getValueToPayPerUnit() {
-		return valueToPayPerUnit;
-	}
-
-	public void setValueToPayPerUnit(Double valueToPayPerUnit) {
-		this.valueToPayPerUnit = valueToPayPerUnit;
-	}
-
-	public Double getTotalValueToPay() {
-		return totalValueToPay;
-	}
-
-	public void setTotalValueToPay(Double totalValueToPay) {
-		this.totalValueToPay = totalValueToPay;
-	}
-	
 	
 
 }

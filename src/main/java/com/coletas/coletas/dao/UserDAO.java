@@ -12,5 +12,5 @@ public interface UserDAO extends BaseDAO<Users, Integer> {
 	Boolean getByUserKey(String userKey);
 	Users getUserByKey(String userkey);
 	UserDTO getUserDTOByKey(String userKey);
-	List<UserDTO> getUserDTOByRole();
+	List<UserDTO> getUserDTOByRole(Integer role);
 }

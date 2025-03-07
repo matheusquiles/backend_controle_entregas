@@ -38,8 +38,6 @@ public class CollectItens implements Serializable{
 	
 	private Double valuePerUnitCollect;
 	private Double totalToReceive;
-	private Double valueToPayPerUnit;
-	private Double totalValueToPay;
 	
 	
 	@OneToOne()
@@ -161,21 +159,6 @@ public class CollectItens implements Serializable{
 		this.totalToReceive = totalToReceave;
 	}
 
-	public Double getValueToPayPerUnit() {
-		return valueToPayPerUnit;
-	}
-
-	public void setValueToPayPerUnit(Double valueToPayPerUnit) {
-		this.valueToPayPerUnit = valueToPayPerUnit;
-	}
-
-	public Double getTotalValueToPay() {
-		return totalValueToPay;
-	}
-
-	public void setTotalValueToPay(Double totalValueToPay) {
-		this.totalValueToPay = totalValueToPay;
-	}
 
 	public void setLastModificationDate(LocalDateTime lastModificationDate) {
 		this.lastModificationDate = lastModificationDate;
@@ -198,8 +181,7 @@ public class CollectItens implements Serializable{
 		return "CollectItens [idCollectItens=" + idCollectItens + ", collect=" + collect + ", collectType="
 				+ collectType + ", quantity=" + quantity + ", deliveryStatus=" + deliveryStatus + ", creationDate="
 				+ creationDate + ", lastModificationDate=" + lastModificationDate + ", valuePerUnitCollect="
-				+ valuePerUnitCollect + ", totalToReceave=" + totalToReceive + ", valueToPayPerUnit="
-				+ valueToPayPerUnit + ", totalValueToPay=" + totalValueToPay + ", createdBy=" + createdBy
+				+ valuePerUnitCollect + ", totalToReceave=" + totalToReceive + ", createdBy=" + createdBy
 				+ ", lastModificationBy=" + lastModificationBy + "]";
 	}
 

@@ -7,10 +7,12 @@ import java.util.Objects;
 import org.springframework.data.annotation.Transient;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -30,6 +32,10 @@ public class Users implements Serializable{
 	private Boolean status;
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
+	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "hierarchy", referencedColumnName = "id_hierarchy", nullable = true)
+    private Hierarchy hierarchy;
 	
 	@Transient
 	private String password;
@@ -59,6 +65,25 @@ public class Users implements Serializable{
 	}
 	
 	
+	
+	
+	public Users(String name, String cpf, String email, String userKey, Boolean status, LocalDateTime creationDate,
+			LocalDateTime lastModificationDate, Hierarchy hierarchy, String password, UserType userType,
+			Permission permission) {
+		super();
+		this.name = name;
+		this.cpf = cpf;
+		this.email = email;
+		this.userKey = userKey;
+		this.status = status;
+		this.creationDate = creationDate;
+		this.lastModificationDate = lastModificationDate;
+		this.hierarchy = hierarchy;
+		this.password = password;
+		this.userType = userType;
+		this.permission = permission;
+	}
+
 	public Users(String userKey, String password) {
 		super();
 		this.userKey = userKey;
@@ -151,14 +176,10 @@ public class Users implements Serializable{
 	public String getPassword() {
 		return password;
 	}
-
-
-
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
 
 	public UserType getUserType() {
 		return userType;
@@ -166,6 +187,14 @@ public class Users implements Serializable{
 
 	public void setUserType(UserType userType) {
 		this.userType = userType;
+	}
+	
+	public Hierarchy getHierarchy() {
+		return hierarchy;
+	}
+
+	public void setHierarchy(Hierarchy hierarchy) {
+		this.hierarchy = hierarchy;
 	}
 
 	@Override

@@ -59,7 +59,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 
                 // Opcional: logar a role para debug
                 String role = jwtTokenUtil.getClaimFromToken(jwtToken, claims -> claims.get("role", String.class));
-                logger.info("Usuário: " + username + " | Role: " + role);
             } else {
                 logger.warn("🚫 Token inválido para usuário: " + username);
             }

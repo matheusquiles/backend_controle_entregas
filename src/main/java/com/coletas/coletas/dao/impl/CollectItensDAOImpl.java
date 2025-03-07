@@ -42,8 +42,6 @@ public class CollectItensDAOImpl extends BaseDAOImpl<CollectItens, Integer> impl
 		hql.append(", ci.deliveryStatus deliveryStatus");
 		hql.append(", ci.valuePerUnitCollect valuePerUnitCollect");
 		hql.append(", ci.totalToReceive totalToReceive");
-		hql.append(", ci.valueToPayPerUnit valueToPayPerUnit");
-		hql.append(", ci.totalValueToPay totalValueToPay");
 		
 		hql.append(" ) ");
 

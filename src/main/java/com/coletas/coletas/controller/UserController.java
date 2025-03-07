@@ -55,8 +55,15 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 	}
 	
 	@GetMapping("/searchMotoboy")
-	public List<UserDTO> getUserDTOByRole() {
-		return service.getUserDTOByRole();
+	public List<UserDTO> getMotoboy() {
+		//passando 3 apaenas para testes. isso será alterado
+		return service.getUserDTOByRole(3);
+	}
+	
+	@GetMapping("/searchCoordinator")
+	public List<UserDTO> getCoordinator() {
+		//passando 2 apaenas para testes. isso será alterado
+		return service.getUserDTOByRole(2);
 	}
 
 }

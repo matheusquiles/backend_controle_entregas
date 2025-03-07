@@ -9,12 +9,13 @@ public class UserDTO {
 	private String userKey;
 	private Boolean status;
 	private String userType;
+	private String coodenador;
 	
 	public UserDTO() {
 	}
 
 	public UserDTO(Integer idUser, String name, String cpf, String email, String userKey, Boolean status,
-			String userType) {
+			String userType, String coodenador) {
 		super();
 		this.idUser = idUser;
 		this.name = name;
@@ -23,6 +24,7 @@ public class UserDTO {
 		this.userKey = userKey;
 		this.status = status;
 		this.userType = userType;
+		this.coodenador = coodenador;
 	}
 
 	public Integer getIdUser() {
@@ -80,8 +82,14 @@ public class UserDTO {
 	public void setUserType(String userType) {
 		this.userType = userType;
 	}
-	
-	
+
+	public String getCoodenador() {
+		return coodenador;
+	}
+
+	public void setCoodenador(String coodenador) {
+		this.coodenador = coodenador;
+	}
 	
 
 }

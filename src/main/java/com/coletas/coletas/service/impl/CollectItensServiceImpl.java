@@ -50,8 +50,6 @@ public class CollectItensServiceImpl extends BaseServiceImpl<CollectItens, Integ
 				collectItens.setCreatedBy(collect.getUserId()); 
 				collectItens.setValuePerUnitCollect(new Double(20));
 				collectItens.setTotalToReceave(collectItens.getValuePerUnitCollect()*collectItens.getQuantity());
-				collectItens.setValueToPayPerUnit(new Double (12));
-				collectItens.setTotalValueToPay(collectItens.getValueToPayPerUnit()*collectItens.getQuantity());
 				collectItens.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
 
 				try {

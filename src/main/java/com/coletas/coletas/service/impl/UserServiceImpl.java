@@ -86,8 +86,8 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	}
 
 	@Override
-	public List<UserDTO> getUserDTOByRole() {
-		return dao.getUserDTOByRole();
+	public List<UserDTO> getUserDTOByRole(Integer role) {
+		return dao.getUserDTOByRole(role);
 	}
 
 

@@ -11,6 +11,6 @@ public interface UserService extends BaseService<Users, Integer> {
 	Boolean saveUser(Users user);
 	Users getUserByKey(String userKey);
 	UserDTO getUserDTOByKey(String userKey);
-	List<UserDTO> getUserDTOByRole();
+	List<UserDTO> getUserDTOByRole(Integer role);
 
 }

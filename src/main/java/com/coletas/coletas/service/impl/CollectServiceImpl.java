@@ -29,7 +29,6 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	public Collect saveCollect(Collect entity) {
 		try {
 			entity.setCreationDate(LocalDateTime.now());
-			entity.setCreatedBy(entity.getUserId());  
 			entity.setCollectKey(key.createKey(entity));
 			dao.save(entity);
 			
