@@ -73,13 +73,10 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 		hql.append(", u.userKey userKey");
 		hql.append(", u.status status");
 		hql.append(", ut.description userType");
-		hql.append(", co.name as coordenador");
 		hql.append(" ) ");
 
 		hql.append(" From Users u ");
 		hql.append(" inner join u.userType ut ");
-		hql.append(" left join u.hierarchy hi ");
-		hql.append(" left join hi.coordinator co ");
 		hql.append(" where 1=1 ");
 
 		return hql;
@@ -97,5 +94,6 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 
 		return resultList;
 	}
+
 
 }

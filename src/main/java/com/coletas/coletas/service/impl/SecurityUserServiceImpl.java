@@ -37,19 +37,16 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	
 	@Transactional
 	@Override
-	public void save(Users entity) {
-	    Users u = userDAO.getUserByKey(entity.getUserKey());
+	public void save(Users entity, String password) {
 
-	    try {
-	        SecurityUser securityUser = new SecurityUser();
-	        securityUser.setUsers(u);
-	        securityUser.setPassword(passwordEncoder.encode(entity.getPassword())); 
-
-	        dao.save(securityUser);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        throw new RuntimeException("Erro ao salvar usuário: " + e.getMessage(), e);
-	    }
+		try {
+            SecurityUser securityUser = new SecurityUser();
+            securityUser.setUsers(entity);
+            securityUser.setPassword(passwordEncoder.encode(password));
+            dao.saveObject(securityUser);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar SecurityUser para o usuário: " + entity.getUserKey(), e);
+        }
 	}
 	
 	

@@ -41,6 +41,12 @@ public abstract class BaseDAOImpl<T, ID> implements BaseDAO<T, ID> {
         Session session = entityManager.unwrap(Session.class);
         ((EntityManager) session).merge(entity);
     }
+    
+    @Override
+    public T saveObject(T entity) {
+    	Session session = entityManager.unwrap(Session.class);
+        return ((EntityManager) session).merge(entity);
+    }
 
     @Override
     public void delete(ID id) {

@@ -35,22 +35,13 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 		}
 	}
 
-	@Transactional
-	private void savePassword(Users entity) {
-		try {
-			securityService.save(entity);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	@Override
 	public Boolean searchUser(String userKey) {
 		return dao.getByUserKey(userKey);
 	}
 
+	@Transactional
 	@Override
 	public Boolean saveUser(Users user) {
 		try {
@@ -66,8 +57,10 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 			u.setPermission(new Permission(user.getUserType().getIdUserType()));
 			//também adicionando para testes
 			u.setStatus(true);
-			u.setPassword("");
-			dao.save(u);
+			Users savedUser = dao.saveObject(u);
+			securityService.save(savedUser, user.getPassword());
+			
+			
 			return true;
 
 		} catch (Exception e) {

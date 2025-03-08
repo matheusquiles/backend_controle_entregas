@@ -33,9 +33,6 @@ public class Users implements Serializable{
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hierarchy", referencedColumnName = "id_hierarchy", nullable = true)
-    private Hierarchy hierarchy;
 	
 	@Transient
 	private String password;
@@ -68,7 +65,7 @@ public class Users implements Serializable{
 	
 	
 	public Users(String name, String cpf, String email, String userKey, Boolean status, LocalDateTime creationDate,
-			LocalDateTime lastModificationDate, Hierarchy hierarchy, String password, UserType userType,
+			LocalDateTime lastModificationDate, String password, UserType userType,
 			Permission permission) {
 		super();
 		this.name = name;
@@ -78,7 +75,6 @@ public class Users implements Serializable{
 		this.status = status;
 		this.creationDate = creationDate;
 		this.lastModificationDate = lastModificationDate;
-		this.hierarchy = hierarchy;
 		this.password = password;
 		this.userType = userType;
 		this.permission = permission;
@@ -189,13 +185,6 @@ public class Users implements Serializable{
 		this.userType = userType;
 	}
 	
-	public Hierarchy getHierarchy() {
-		return hierarchy;
-	}
-
-	public void setHierarchy(Hierarchy hierarchy) {
-		this.hierarchy = hierarchy;
-	}
 
 	@Override
 	public boolean equals(Object obj) {

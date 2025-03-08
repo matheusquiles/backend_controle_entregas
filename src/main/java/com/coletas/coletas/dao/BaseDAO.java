@@ -13,4 +13,5 @@ public interface BaseDAO <T, ID>{
     void save(T entity);
     void delete(ID id);
     Optional<T> getByDescription(String description);
+    T saveObject(T entity);
 }

@@ -12,5 +12,6 @@ public interface UserService extends BaseService<Users, Integer> {
 	Users getUserByKey(String userKey);
 	UserDTO getUserDTOByKey(String userKey);
 	List<UserDTO> getUserDTOByRole(Integer role);
+	
 
 }

@@ -7,7 +7,7 @@ import com.coletas.coletas.model.Users;
 
 public interface SecurityUserService extends BaseService<SecurityUser, Integer> {
 	
-	void save(Users entity);
+	void save(Users entity, String string);
 	Boolean login(Users user);
 	UserDetails loadUserByUsername(String userKey);
 
