@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coletas.coletas.dao.HierarchyDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.UserDTO;
+import com.coletas.coletas.model.Hierarchy;
 import com.coletas.coletas.model.Permission;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
@@ -22,6 +24,8 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	private UserDAO dao;
 	@Autowired
 	private SecurityUserService securityService;
+	@Autowired
+	private HierarchyDAO hierarchyDAO;
 
 	@Transactional
 	@Override
@@ -57,8 +61,20 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 			u.setPermission(new Permission(user.getUserType().getIdUserType()));
 			//também adicionando para testes
 			u.setStatus(true);
+			
+			
 			Users savedUser = dao.saveObject(u);
 			securityService.save(savedUser, user.getPassword());
+			
+			if (user.getHierarchy() != null) {
+	            Users coordinator = dao.get(user.getHierarchy()).orElse(null);
+	            if (coordinator != null) {
+	                hierarchyDAO.save(new Hierarchy(savedUser, coordinator));
+	            } else {
+	                System.out.println("Coordenador com ID " + user.getHierarchy() + " não encontrado. Hierarquia não será salva.");
+	            }
+	        }
+			
 			
 			
 			return true;

@@ -9,7 +9,7 @@ public class UserDTO {
 	private String userKey;
 	private Boolean status;
 	private String userType;
-	private String coodenador;
+	private String coordinator;
 	
 	public UserDTO() {
 	}
@@ -24,7 +24,7 @@ public class UserDTO {
 		this.userKey = userKey;
 		this.status = status;
 		this.userType = userType;
-		this.coodenador = coodenador;
+		this.coordinator = coodenador;
 	}
 
 	public Integer getIdUser() {
@@ -83,12 +83,12 @@ public class UserDTO {
 		this.userType = userType;
 	}
 
-	public String getCoodenador() {
-		return coodenador;
+	public String getCoodinator() {
+		return coordinator;
 	}
 
-	public void setCoodenador(String coodenador) {
-		this.coodenador = coodenador;
+	public void setCoodinator(String coodenador) {
+		this.coordinator = coodenador;
 	}
 	
 

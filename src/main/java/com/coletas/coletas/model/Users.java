@@ -7,12 +7,10 @@ import java.util.Objects;
 import org.springframework.data.annotation.Transient;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -36,6 +34,9 @@ public class Users implements Serializable{
 	
 	@Transient
 	private String password;
+	
+	@Transient
+	private Integer hierarchy;
 	
 	@OneToOne()
 	@JoinColumn(name = "user_type")
@@ -66,7 +67,7 @@ public class Users implements Serializable{
 	
 	public Users(String name, String cpf, String email, String userKey, Boolean status, LocalDateTime creationDate,
 			LocalDateTime lastModificationDate, String password, UserType userType,
-			Permission permission) {
+			Permission permission, Integer hierarchy) {
 		super();
 		this.name = name;
 		this.cpf = cpf;
@@ -78,6 +79,7 @@ public class Users implements Serializable{
 		this.password = password;
 		this.userType = userType;
 		this.permission = permission;
+		this.hierarchy = hierarchy;
 	}
 
 	public Users(String userKey, String password) {
@@ -98,6 +100,14 @@ public class Users implements Serializable{
 
 	public void setIdUser(Integer idUser) {
 		this.idUser = idUser;
+	}
+
+	public Integer getHierarchy() {
+		return hierarchy;
+	}
+
+	public void setHierarchy(Integer hierarchy) {
+		this.hierarchy = hierarchy;
 	}
 
 	public String getName() {
