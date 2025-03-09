@@ -10,7 +10,7 @@ import com.coletas.coletas.dao.HierarchyDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dao.UserTypeDAO;
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequestDTO;
+import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.model.Hierarchy;
 import com.coletas.coletas.model.Permission;
 import com.coletas.coletas.model.UserType;
@@ -57,7 +57,7 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	}
 	
 	@Transactional
-	public Boolean saveUserDTO (UserRequestDTO user) {
+	public Boolean saveUserDTO (UserRequesDTO user) {
 		try {
 			
 			Users u = new Users();
@@ -109,6 +109,12 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	@Override
 	public List<UserDTO> getUserDTOByRole(Integer role) {
 		return dao.getUserDTOByRole(role);
+	}
+
+
+	@Override
+	public List<UserDTO> getDTOByFilters(UserRequesDTO user) {
+		return dao.getDTOByFilters(user);
 	}
 
 

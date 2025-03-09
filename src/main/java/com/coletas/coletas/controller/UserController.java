@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequestDTO;
+import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.UserService;
 import com.coletas.coletas.service.impl.UserServiceImpl;
@@ -48,7 +48,7 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 	}
 	
 	@PostMapping("/saveUser")
-	public Boolean saveUser(@RequestBody UserRequestDTO user) {
+	public Boolean saveUser(@RequestBody UserRequesDTO user) {
 		
 		if (service.searchUser(user.getUserKey())) {
 			System.err.println("User already exists: " + user.getUserKey());
@@ -75,14 +75,27 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 	
 	@GetMapping("/searchMotoboy")
 	public List<UserDTO> getMotoboy() {
-		//passando 3 apaenas para testes. isso será alterado
+		//passando 3 apenas para testes. isso será alterado
 		return service.getUserDTOByRole(3);
 	}
 	
 	@GetMapping("/searchCoordinator")
 	public List<UserDTO> getCoordinator() {
-		//passando 2 apaenas para testes. isso será alterado
+		//passando 2 apenas para testes. isso será alterado
 		return service.getUserDTOByRole(2);
+	}
+	
+	@PostMapping("/getDTO")
+	public List<UserDTO> getDTOByFilters(@RequestBody UserRequesDTO user){
+		try {
+			
+			List<UserDTO> result = service.getDTOByFilters(user);
+			return result;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

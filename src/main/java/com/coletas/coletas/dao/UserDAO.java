@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.coletas.coletas.dto.UserDTO;
+import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 
 	
@@ -13,4 +14,5 @@ public interface UserDAO extends BaseDAO<Users, Integer> {
 	Users getUserByKey(String userkey);
 	UserDTO getUserDTOByKey(String userKey);
 	List<UserDTO> getUserDTOByRole(Integer role);
+	List<UserDTO> getDTOByFilters(UserRequesDTO user);
 }

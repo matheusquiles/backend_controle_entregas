@@ -1,6 +1,6 @@
 package com.coletas.coletas.dto;
 
-public class UserRequestDTO {
+public class UserRequesDTO {
 	
 	private Integer idUser;
 	private String name;
