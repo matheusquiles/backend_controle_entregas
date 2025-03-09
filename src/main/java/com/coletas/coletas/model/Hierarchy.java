@@ -40,6 +40,18 @@ public class Hierarchy implements Serializable{
 		this.coordinator = coordinator;
 	}
 
+	public Hierarchy(Users motoboy, Users coordinator) {
+		super();
+		this.motoboy = motoboy;
+		this.coordinator = coordinator;
+	}
+	
+
+	public Hierarchy(Users coordinator) {
+		super();
+		this.coordinator = coordinator;
+	}
+
 	public Integer getIdHierarchy() {
 		return idHierarchy;
 	}

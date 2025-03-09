@@ -3,6 +3,7 @@ package com.coletas.coletas.service;
 import java.util.List;
 
 import com.coletas.coletas.dto.UserDTO;
+import com.coletas.coletas.dto.UserRequestDTO;
 import com.coletas.coletas.model.Users;
 
 public interface UserService extends BaseService<Users, Integer> {
@@ -12,6 +13,7 @@ public interface UserService extends BaseService<Users, Integer> {
 	Users getUserByKey(String userKey);
 	UserDTO getUserDTOByKey(String userKey);
 	List<UserDTO> getUserDTOByRole(Integer role);
+	Boolean saveUserDTO(UserRequestDTO user);
 	
 
 }
