@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.dto.UserDTO;
 import com.coletas.coletas.dto.UserRequesDTO;
+import com.coletas.coletas.dto.UserWithHierarchyDTO;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.UserService;
 import com.coletas.coletas.service.impl.UserServiceImpl;
@@ -73,14 +74,19 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 		return service.getUserDTOByKey(userKey);
 	}
 	
+	@GetMapping("/getById/{id}")
+	public UserWithHierarchyDTO getUserDTOByKey(@PathVariable Integer id) {
+		return service.getUserWithHierarchy(id);
+	}
+	
 	@GetMapping("/searchMotoboy")
 	public List<UserDTO> getMotoboy() {
 		//passando 3 apenas para testes. isso será alterado
 		return service.getUserDTOByRole(3);
 	}
 	
-	@GetMapping("/searchCoordinator")
-	public List<UserDTO> getCoordinator() {
+	@GetMapping("/searchCordinator")
+	public List<UserDTO> getCordinator() {
 		//passando 2 apenas para testes. isso será alterado
 		return service.getUserDTOByRole(2);
 	}

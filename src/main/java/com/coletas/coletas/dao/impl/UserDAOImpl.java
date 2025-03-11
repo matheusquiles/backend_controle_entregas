@@ -169,5 +169,15 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 		
 	}
 
+	@Override
+	public Users getById(Integer id) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		String hql = "FROM Users u WHERE u.idUser = id";
+		Users u = currentSession.createQuery(hql.toString(), Users.class)
+				.setParameter("id", id)
+				.uniqueResult();
+		return u != null ? u : null;
+	}
+
 
 }

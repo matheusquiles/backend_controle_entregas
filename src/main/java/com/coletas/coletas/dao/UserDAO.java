@@ -11,6 +11,7 @@ import com.coletas.coletas.model.Users;
 public interface UserDAO extends BaseDAO<Users, Integer> {
 	Optional<Users> getByDescription(String escritorio); 
 	Boolean getByUserKey(String userKey);
+	Users getById(Integer id);
 	Users getUserByKey(String userkey);
 	UserDTO getUserDTOByKey(String userKey);
 	List<UserDTO> getUserDTOByRole(Integer role);

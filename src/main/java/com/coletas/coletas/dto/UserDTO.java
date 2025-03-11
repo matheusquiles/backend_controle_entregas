@@ -15,7 +15,7 @@ public class UserDTO {
 	}
 
 	public UserDTO(Integer idUser, String name, String cpf, String email, String userKey, Boolean status,
-			String userType, String coodenador) {
+			String userType, String coordinator) {
 		super();
 		this.idUser = idUser;
 		this.name = name;
@@ -24,7 +24,7 @@ public class UserDTO {
 		this.userKey = userKey;
 		this.status = status;
 		this.userType = userType;
-		this.coordinator = coodenador;
+		this.coordinator = coordinator;
 	}
 
 	public Integer getIdUser() {
@@ -83,13 +83,14 @@ public class UserDTO {
 		this.userType = userType;
 	}
 
-	public String getCoodinator() {
+	public String getCoordinator() {
 		return coordinator;
 	}
 
-	public void setCoodinator(String coodenador) {
-		this.coordinator = coodenador;
+	public void setCoordinator(String coordinator) {
+		this.coordinator = coordinator;
 	}
+
 	
 
 }

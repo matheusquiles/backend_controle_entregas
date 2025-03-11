@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.coletas.coletas.dto.UserDTO;
 import com.coletas.coletas.dto.UserRequesDTO;
+import com.coletas.coletas.dto.UserWithHierarchyDTO;
 import com.coletas.coletas.model.Users;
 
 public interface UserService extends BaseService<Users, Integer> {
@@ -15,6 +16,8 @@ public interface UserService extends BaseService<Users, Integer> {
 	List<UserDTO> getUserDTOByRole(Integer role);
 	Boolean saveUserDTO(UserRequesDTO user);
 	List<UserDTO> getDTOByFilters(UserRequesDTO user);
+	Users getById(Integer id);
+	UserWithHierarchyDTO getUserWithHierarchy(Integer id);
 	
 
 }
