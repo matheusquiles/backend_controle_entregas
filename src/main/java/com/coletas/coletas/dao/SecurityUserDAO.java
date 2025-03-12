@@ -6,7 +6,7 @@ import com.coletas.coletas.model.SecurityUser;
 
 public interface SecurityUserDAO extends BaseDAO<SecurityUser, Integer> {
 	Optional<SecurityUser> getByDescription(String securityUser); 
-	Optional<SecurityUser> getByUserId(Integer idUser);
+	SecurityUser getByUserId(Integer idUser);
 	SecurityUser getByUserKey(String userKey);
 
 }

@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.SecurityUserDAO;
-import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.model.SecurityUser;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
@@ -28,22 +27,19 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 	private SecurityUserDAO dao;
 	
 	@Autowired
-	private UserDAO userDAO;
-	
-	@Autowired
 	@Lazy
 	private BCryptPasswordEncoder passwordEncoder;
 	
 	
 	@Transactional
 	@Override
-	public void save(Users entity, String password) {
-
+	public Boolean save(Users entity, String password) {
 		try {
             SecurityUser securityUser = new SecurityUser();
             securityUser.setUsers(entity);
             securityUser.setPassword(passwordEncoder.encode(password));
             dao.saveObject(securityUser);
+            return true;
         } catch (Exception e) {
             throw new RuntimeException("Erro ao salvar SecurityUser para o usuário: " + entity.getUserKey(), e);
         }
@@ -88,6 +84,24 @@ public class SecurityUserServiceImpl extends BaseServiceImpl<SecurityUser, Integ
 				authorities
 	        );
 	}
+
+
+
+	@Override
+	public Boolean changePassord(Users user) {
+		try {
+            SecurityUser securityUser = dao.getByUserId(user.getIdUser());
+            
+            if(securityUser != null) {
+            	securityUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            	dao.saveObject(securityUser);
+            }
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao salvar SecurityUser para o usuário: " + user.getUserKey(), e);
+        }
+	}
+
 
 
 

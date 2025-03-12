@@ -14,6 +14,7 @@ import com.coletas.coletas.dto.UserDTO;
 import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.dto.UserWithHierarchyDTO;
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;
 import com.coletas.coletas.service.impl.UserServiceImpl;
 
@@ -23,6 +24,9 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private SecurityUserService securityUserService;
 
 	public UserController(UserServiceImpl service) {
 		super(service);
@@ -102,6 +106,17 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	@PostMapping("/changePassword")
+	public Boolean changePassword(@RequestBody Users user) {
+		try {
+			securityUserService.changePassord(user);
+			return true;
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao alterar a senha!");
+		}
+		
 	}
 
 }

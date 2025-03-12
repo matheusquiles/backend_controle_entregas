@@ -18,12 +18,16 @@ public class SecurityUserDAOImpl extends BaseDAOImpl<SecurityUser, Integer> impl
 	}
 
 	@Override
-	public Optional<SecurityUser> getByUserId(Integer idUser) {
+	public SecurityUser getByUserId(Integer idUser) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		String hql = "FROM SecurityUser s WHERE u.idUser = :idUser";
-		SecurityUser s = currentSession.createQuery(hql, SecurityUser.class).setParameter("idUser", idUser)
+		StringBuilder hql = new StringBuilder();
+		hql.append("select su ");
+		hql.append("from SecurityUser su ");
+		hql.append("where su.users.id = :idUser");
+		
+		SecurityUser s = currentSession.createQuery(hql.toString(), SecurityUser.class).setParameter("idUser", idUser)
 				.uniqueResult();
-		return Optional.ofNullable(s);
+		return s != null ? s : null;
 	}
 
 	@Override
