@@ -138,6 +138,9 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 	        if (request.getName() != null && !request.getName().isEmpty()) {
 	            hql.append(" and LOWER(u.name) LIKE LOWER(:name)");
 	        }
+	        if (request.getStatus() != null ) {
+	            hql.append(" and u.status = :status");
+	        }
 	        
 	    }
 	    
@@ -163,6 +166,10 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 	            String namePattern = request.getName().replace("*", "%");
 	            query.setParameter("name", namePattern);
 	        }
+	        if (request.getStatus() != null) {
+	            query.setParameter("status", request.getStatus());
+	        }
+	        
 	    }
 
 	    return query.getResultList();
