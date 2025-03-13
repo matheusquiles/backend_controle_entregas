@@ -118,5 +118,15 @@ public class UserController extends BaseControllerImpl<Users, Integer> {
 		}
 		
 	}
+	
+	@PostMapping("/editUser")
+	public Boolean editUser(@RequestBody Users user) {
+		try {
+			service.editUser(user);
+			return true;
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao editar usuário!");
+		}
+	}
 
 }

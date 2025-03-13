@@ -18,6 +18,7 @@ public interface UserService extends BaseService<Users, Integer> {
 	List<UserDTO> getDTOByFilters(UserRequesDTO user);
 	Users getById(Integer id);
 	UserWithHierarchyDTO getUserWithHierarchy(Integer id);
+	Boolean editUser(Users user);
 	
 
 }

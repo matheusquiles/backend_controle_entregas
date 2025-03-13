@@ -14,7 +14,8 @@ public class UserWithHierarchyDTO {
     private String lastModificationDate;
     private String password;
     private Integer hierarchyId; 
-    private String hierarchyName; 
+    private String hierarchyName;
+    private Integer idUserType;
     private String userType;
     private String permission;
     private List<HierarchyDTO> availableHierarchies;
@@ -22,8 +23,18 @@ public class UserWithHierarchyDTO {
     public Integer getIdUser() {
         return idUser;
     }
+    
+    public Integer getIdUserType() {
+		return idUserType;
+	}
 
-    public void setIdUser(Integer idUser) {
+	public void setIdUserType(Integer idUserType) {
+		this.idUserType = idUserType;
+	}
+
+
+
+	public void setIdUser(Integer idUser) {
         this.idUser = idUser;
     }
 

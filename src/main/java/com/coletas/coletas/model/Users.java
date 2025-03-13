@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import org.springframework.data.annotation.Transient;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,7 @@ public class Users implements Serializable{
 	private String email;
 	private String userKey;
 	private Boolean status;
+	@Column(updatable = false)
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	
@@ -61,9 +63,6 @@ public class Users implements Serializable{
 		this.userType = userType;
 		this.permission = permission;
 	}
-	
-	
-	
 	
 	public Users(String name, String cpf, String email, String userKey, Boolean status, LocalDateTime creationDate,
 			LocalDateTime lastModificationDate, String password, UserType userType,

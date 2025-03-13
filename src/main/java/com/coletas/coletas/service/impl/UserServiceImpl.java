@@ -128,12 +128,13 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 		dto.setEmail(user.getEmail());
 		dto.setUserKey(user.getUserKey());
 		dto.setStatus(user.getStatus());
+		dto.setIdUserType(user.getUserType() != null ? user.getUserType().getIdUserType() : null);
 		dto.setUserType(user.getUserType() != null ? user.getUserType().getDescription() : null);
 		dto.setPermission(user.getPermission() != null ? user.getPermission().getDescription() : null);
 		
 		Hierarchy hierarchy = hierarchyDAO.getByMotoboy(id);
 		if(hierarchy != null ) {
-			dto.setHierarchyId(hierarchy.getIdHierarchy());
+			dto.setHierarchyId(hierarchy.getCoordinator().getIdUser());
 			dto.setHierarchyName(hierarchy.getCoordinator().getName());
 		}
 
@@ -145,8 +146,33 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 
 	@Override
 	public Users getById(Integer id) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Boolean editUser(Users user) {
+	    try {
+	        user.setLastModificationDate(LocalDateTime.now());
+
+	        Hierarchy h = hierarchyDAO.getByMotoboy(user.getIdUser());
+	        if (h == null) {
+	            h = new Hierarchy();
+	        }
+
+	        h.setMotoboy(user);
+	        if (user.getHierarchy() != null) {
+	            h.setCoordinator(dao.getById(user.getHierarchy())); 
+	        }
+
+	        hierarchyDAO.save(h);
+	        user.setHierarchy(null);
+	        dao.save(user);
+
+	        return true;
+
+	    } catch (Exception e) {
+	        throw new RuntimeException("Failed to edit user: " + user.getUserKey(), e);
+	    }
 	}
 
 }
