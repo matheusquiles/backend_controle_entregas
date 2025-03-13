@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequesDTO;
+import com.coletas.coletas.dto.request.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 
 @Repository

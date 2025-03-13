@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +34,7 @@ public class CollectItens implements Serializable{
 	private Integer quantity;
 	
 	private String deliveryStatus;
+	@Column(updatable = false)
 	private LocalDateTime creationDate;
 	private LocalDateTime lastModificationDate;
 	

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.dto.UserWithHierarchyDTO;
+import com.coletas.coletas.dto.request.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.SecurityUserService;
 import com.coletas.coletas.service.UserService;

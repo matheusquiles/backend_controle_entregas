@@ -1,8 +1,8 @@
-package com.coletas.coletas.dto;
+package com.coletas.coletas.dto.request;
 
 import java.time.LocalDate;
 
-public class CollectRequestDTO {
+public class CollecttRequestDTO {
 	private Integer idUser;
     private LocalDate initialDate;
     private LocalDate finalDate;
@@ -10,18 +10,18 @@ public class CollectRequestDTO {
     private Integer idEdress;
     private String deliveryStatus;
     
-    public CollectRequestDTO() {
+    public CollecttRequestDTO() {
 	}
 
     
-    public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate) {
+    public CollecttRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate) {
 		super();
 		this.idUser = idUser;
 		this.initialDate = initialDate;
 		this.finalDate = finalDate;
 	}
     
-	public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idEdress) {
+	public CollecttRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idEdress) {
 		super();
 		this.idUser = idUser;
 		this.initialDate = initialDate;
@@ -29,7 +29,7 @@ public class CollectRequestDTO {
 		this.idEdress = idEdress;
 	}
 
-	public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
+	public CollecttRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
 			Integer idEdress) {
 		super();
 		this.idUser = idUser;
@@ -40,7 +40,7 @@ public class CollectRequestDTO {
 	}
 	
 
-    public CollectRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
+    public CollecttRequestDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervisor,
 			Integer idEdress, String deliveryStatus) {
 		super();
 		this.idUser = idUser;
@@ -102,7 +102,6 @@ public class CollectRequestDTO {
 	public void setDeliveryStatus(String deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
-    
-    
+
 
 }

@@ -8,8 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.CollectDAO;
+import com.coletas.coletas.dao.CollectItensDAO;
+import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.CollectDTO;
+import com.coletas.coletas.dto.CollectItensDTO;
+import com.coletas.coletas.dto.request.CollectEditRequestDTO;
 import com.coletas.coletas.model.Collect;
+import com.coletas.coletas.model.CollectItens;
+import com.coletas.coletas.model.Users;
 import com.coletas.coletas.service.CollectService;
 import com.coletas.coletas.util.CreateKey;
 
@@ -23,6 +29,12 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	
 	@Autowired
 	private CreateKey key;
+	
+	@Autowired
+	private UserDAO userDAO;
+	
+	@Autowired
+	private CollectItensDAO collectItensDAO;
 	
 	@Transactional
 	@Override
@@ -77,23 +89,42 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress, String deliveryStatus) {
 		return dao.getDTOByUserAndDate(idUser, initialDate, finalDate, idSupervidor, idEdress, deliveryStatus);
 	}
+
+
+	@Override
+	public Boolean editCollect(List<CollectEditRequestDTO> collect) {
+		
+		Users laster = userDAO.getById(collect.get(0).getLastModificationBy());
+		
+		try {
+			for (CollectEditRequestDTO collectEditRequestDTO : collect) {
+				Collect savedCollect = dao.get(collectEditRequestDTO.getIdCollect()).orElseThrow();
+				
+				savedCollect.setLastModificationDate(LocalDateTime.now());
+				savedCollect.setLastModificationBy(laster);
+				
+				for (CollectItensDTO item : collectEditRequestDTO.getItens()) {
+					CollectItens c = collectItensDAO.get(item.getIdCollectItens()).orElseThrow();
+					c.setLastModificationBy(laster);
+					c.setlastmodificationdate(LocalDateTime.now());
+					c.setQuantity(item.getQuantity());
+					c.setValuePerUnitCollect(item.getValuePerUnitCollect());
+					c.setTotalToReceave(item.getTotalToReceive());
+					c.setDeliveryStatus(item.getDeliveryStatus());
+					
+					collectItensDAO.saveObject(c);
+					
+				}
+				
+				dao.save(savedCollect);
+			}
+			return true;
+				
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao editar usuário!");
+		}
+		
+	}
 	
-//	public String createKey(Collect entity) {
-//		try {
-//			LocalDate date = entity.getDate();
-//
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
-//			String formattedDate = date.format(formatter);
-//
-//			Integer userId = entity.getUserId().getIdUser();
-//
-//			Integer qtdCollects = dao.countCollectByUserAndDate(userId, date) +1;
-//
-//			return formattedDate + userId + qtdCollects;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return null;
-//		}
-//	}
 
 }

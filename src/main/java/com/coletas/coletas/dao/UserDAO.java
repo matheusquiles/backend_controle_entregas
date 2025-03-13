@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequesDTO;
+import com.coletas.coletas.dto.request.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 
 	

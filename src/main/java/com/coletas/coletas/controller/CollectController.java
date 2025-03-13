@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.coletas.coletas.dto.CollectDTO;
-import com.coletas.coletas.dto.CollectRequestDTO;
+import com.coletas.coletas.dto.request.CollectEditRequestDTO;
+import com.coletas.coletas.dto.request.CollecttRequestDTO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.service.CollectItensService;
 import com.coletas.coletas.service.CollectService;
@@ -47,7 +48,7 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
 
 	}
     @PostMapping("/getDTO")
-	public List<CollectDTO> getDTOByUserAndDate(@RequestBody CollectRequestDTO request){
+	public List<CollectDTO> getDTOByUserAndDate(@RequestBody CollecttRequestDTO request){
 		try {
 			List<CollectDTO> list = service.getDTOByUserAndDate(request.getIdUser(), request.getInitialDate(), request.getFinalDate(), request.getIdSupervisor(), request.getIdEdress(), request.getDeliveryStatus());
 			return list;
@@ -58,6 +59,18 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
 		}	
 		
 	}
+    
+    @PostMapping("/editCollect")
+    public Boolean editCollect(@RequestBody List<CollectEditRequestDTO> collect) {
+    	try {
+    		service.editCollect(collect);
+    		return true;
+    	} catch (Exception e) {
+    		throw new RuntimeException("Erro ao editar usuário!");
+		}
+    	
+    	
+    }
 
 	
 

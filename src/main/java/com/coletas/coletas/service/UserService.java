@@ -3,8 +3,8 @@ package com.coletas.coletas.service;
 import java.util.List;
 
 import com.coletas.coletas.dto.UserDTO;
-import com.coletas.coletas.dto.UserRequesDTO;
 import com.coletas.coletas.dto.UserWithHierarchyDTO;
+import com.coletas.coletas.dto.request.UserRequesDTO;
 import com.coletas.coletas.model.Users;
 
 public interface UserService extends BaseService<Users, Integer> {

@@ -1,4 +1,4 @@
-package com.coletas.coletas.dto;
+package com.coletas.coletas.dto.request;
 
 public class UserRequesDTO {
 	
