@@ -68,6 +68,22 @@ public class Delivery implements Serializable{
 		this.createdBy = createdBy;
 		this.lastModificationBy = lastModificationBy;
 	}
+	
+	public Delivery(String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion, LocalDate date,
+			Boolean status, LocalDateTime creationDate, LocalDateTime lastModificationDate, Users createdBy,
+			Users lastModificationBy) {
+		super();
+		this.deliveryKey = deliveryKey;
+		this.value = value;
+		this.motoboy = motoboy;
+		this.deliveryRegion = deliveryRegion;
+		this.date = date;
+		this.status = status;
+		this.creationDate = creationDate;
+		this.lastModificationDate = lastModificationDate;
+		this.createdBy = createdBy;
+		this.lastModificationBy = lastModificationBy;
+	}
 
 	public Integer getIdDelivery() {
 		return idDelivery;
