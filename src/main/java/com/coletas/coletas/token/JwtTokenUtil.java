@@ -22,11 +22,10 @@ public class JwtTokenUtil {
 
 	public String generateToken(UserDetails userDetails) {
 	    Map<String, Object> claims = new HashMap<>();
-	    // Adiciona a role como um claim (pegando a primeira authority, ou ajuste conforme sua lógica)
 	    String role = userDetails.getAuthorities().stream()
 	        .map(GrantedAuthority::getAuthority)
 	        .findFirst()
-	        .orElse("ROLE_USER"); // Valor padrão caso não haja role
+	        .orElse("ROLE_USER");
 	    claims.put("role", role);
 	    
 	    return doGenerateToken(claims, userDetails.getUsername());

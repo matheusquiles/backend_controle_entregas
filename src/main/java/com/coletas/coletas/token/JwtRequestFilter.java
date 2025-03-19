@@ -31,7 +31,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-
         final String requestTokenHeader = request.getHeader("Authorization");
 
         String username = null;
@@ -42,23 +41,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                logger.error("❌ Não foi possível obter o JWT Token");
+                logger.error("❌ Token malformado: " + e.getMessage());
             } catch (ExpiredJwtException e) {
-                logger.error("❌ JWT Token expirado");
+                logger.error("❌ JWT Token expirado: " + e.getMessage());
+            } catch (Exception e) {
+                logger.error("❌ Erro inesperado ao processar token: " + e.getMessage());
             }
         } 
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = securityUserService.loadUserByUsername(username);
-
             if (jwtTokenUtil.validateToken(jwtToken, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                     new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                
-                // Opcional: logar a role para debug
-                String role = jwtTokenUtil.getClaimFromToken(jwtToken, claims -> claims.get("role", String.class));
+//                String role = jwtTokenUtil.getClaimFromToken(jwtToken, claims -> claims.get("role", String.class));
+//                logger.info("✅ Autenticação bem-sucedida para usuário: " + username + " | Role: " + role);
             } else {
                 logger.warn("🚫 Token inválido para usuário: " + username);
             }

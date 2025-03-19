@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.BaseDAO;
-import com.coletas.coletas.dao.CollectDAO;
 import com.coletas.coletas.dao.CollectItensDAO;
+import com.coletas.coletas.dao.EdressDAO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.CollectItens;
 import com.coletas.coletas.service.CollectItensService;
@@ -23,7 +23,7 @@ public class CollectItensServiceImpl extends BaseServiceImpl<CollectItens, Integ
 	private CollectItensDAO dao;
 	
 	@Autowired
-	private CollectDAO collectDAO;
+	private EdressDAO edressDAO;
 
 	@Override
 	@Transactional
@@ -40,27 +40,29 @@ public class CollectItensServiceImpl extends BaseServiceImpl<CollectItens, Integ
 	@Override
 	@Transactional
 	public Boolean saveCollectItens(Collect collect) {
-		
-		Collect c = collectDAO.getByCollectKey(collect.getCollectKey());
 
-		if (!collect.getItens().isEmpty()) {
-			for (CollectItens collectItens : collect.getItens()) {
-				collectItens.setCollect(c);
-				collectItens.setCreationDate(LocalDateTime.now());
-				collectItens.setCreatedBy(collect.getUserId()); 
-				collectItens.setValuePerUnitCollect(new Double(20));
-				collectItens.setTotalToReceave(collectItens.getValuePerUnitCollect()*collectItens.getQuantity());
-				collectItens.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
+	    if (!collect.getItens().isEmpty()) {
+	        for (CollectItens collectItens : collect.getItens()) {
+	            collectItens.setCollect(collect);
+	            collectItens.setCreationDate(LocalDateTime.now());
+	            collectItens.setCreatedBy(collect.getUserId());
+	            
+	            Double preValue = edressDAO.getPreValue(collect.getEdress().getIdEdress(), collectItens.getCollectType().getIdCollectType());
+	            
+	            collectItens.setValuePerUnitCollect(preValue != null ? preValue : 0.0);
+	            collectItens.setTotalToReceave(collectItens.getValuePerUnitCollect() * collectItens.getQuantity());
+	            collectItens.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
 
-				try {
-					dao.save(collectItens);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			return true;
-		}
-		return false;
+	            try {
+	                dao.save(collectItens);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	                return false;
+	            }
+	        }
+	        return true;
+	    }
+	    return false;
 	}
 
 	private <T> T getEntity(BaseDAO<T, Integer> dao, Integer id, String errorMessage) {

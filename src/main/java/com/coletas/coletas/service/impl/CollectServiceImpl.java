@@ -16,6 +16,7 @@ import com.coletas.coletas.dto.request.CollectEditRequestDTO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.CollectItens;
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.CollectItensService;
 import com.coletas.coletas.service.CollectService;
 import com.coletas.coletas.util.CreateKey;
 
@@ -36,13 +37,19 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 	@Autowired
 	private CollectItensDAO collectItensDAO;
 	
+	@Autowired
+	private CollectItensService serviceCollectItens;
+	
 	@Transactional
 	@Override
 	public Collect saveCollect(Collect entity) {
 		try {
 			entity.setCreationDate(LocalDateTime.now());
 			entity.setCollectKey(key.createKey(entity));
-			dao.save(entity);
+			Collect savedCollect = dao.saveObject(entity);
+			savedCollect.setItens(entity.getItens());
+			
+			serviceCollectItens.saveCollectItens(savedCollect);
 			
 			return entity;
 		} catch (Exception e) {
