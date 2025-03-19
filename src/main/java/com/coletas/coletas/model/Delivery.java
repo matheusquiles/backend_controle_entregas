@@ -176,7 +176,7 @@ public class Delivery implements Serializable{
 	@Override
 	public String toString() {
 		return "Delivery [idDelivery=" + idDelivery + ", deliveryKey=" + deliveryKey + ", motoboy=" + motoboy
-				+ ", deliveryEdress=" + deliveryRegion + ", date=" + date + ", status=" + status + ", creationDate="
+				+ ", deliveryAdress=" + deliveryRegion + ", date=" + date + ", status=" + status + ", creationDate="
 				+ creationDate + ", lastModificationDate=" + lastModificationDate + ", createdBy=" + createdBy
 				+ ", lastModificationBy=" + lastModificationBy + "]";
 	}

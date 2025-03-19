@@ -1,12 +1,14 @@
 package com.coletas.coletas.model;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Edress implements Serializable{
@@ -20,6 +22,9 @@ private static final long serialVersionUID = 1L;
 	private String edress;
 	private Boolean status;
 	
+	@Transient
+	private List<CollectPreValue> collectPreValue;
+	
 	public Edress() {
 	}
 
@@ -31,6 +36,16 @@ private static final long serialVersionUID = 1L;
 	}
 	
 	
+	
+	
+	public Edress(String description, String edress, Boolean status, List<CollectPreValue> collectPreValue) {
+		super();
+		this.description = description;
+		this.edress = edress;
+		this.status = status;
+		this.collectPreValue = collectPreValue;
+	}
+
 	//criado para testes
 	public Edress(Integer idEdress) {
 		super();
@@ -72,6 +87,15 @@ private static final long serialVersionUID = 1L;
 	@Override
 	public int hashCode() {
 		return Objects.hash(idEdress);
+	}
+	
+
+	public List<CollectPreValue> getCollectPreValue() {
+		return collectPreValue;
+	}
+
+	public void setCollectPreValue(List<CollectPreValue> collectPreValue) {
+		this.collectPreValue = collectPreValue;
 	}
 
 	@Override

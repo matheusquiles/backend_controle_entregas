@@ -20,5 +20,7 @@ public class EdressDAOImpl extends BaseDAOImpl<Edress, Integer> implements Edres
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
+	
+	
 
 }

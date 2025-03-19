@@ -26,6 +26,13 @@ private static final long serialVersionUID = 1L;
 		this.description = description;
 		this.status = status;
 	}
+	
+	
+
+	public CollectType(Integer idCollectType) {
+		super();
+		this.idCollectType = idCollectType;
+	}
 
 	public Integer getIdCollectType() {
 		return idCollectType;
