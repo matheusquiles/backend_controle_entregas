@@ -1,10 +1,14 @@
 package com.coletas.coletas.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coletas.coletas.dao.CollectPreValueDAO;
 import com.coletas.coletas.dao.EdressDAO;
+import com.coletas.coletas.dto.AddressDTO;
+import com.coletas.coletas.dto.request.AddressRequest;
 import com.coletas.coletas.model.CollectPreValue;
 import com.coletas.coletas.model.Edress;
 import com.coletas.coletas.service.EdressService;
@@ -37,6 +41,12 @@ public class EdressServiceImpl extends BaseServiceImpl<Edress, Integer> implemen
 		}
 		
 		
+	}
+
+	@Override
+	@Transactional
+	public List<AddressDTO> getByFilters(AddressRequest address) {
+		return dao.getByFilters(address);
 	}
 	
 
