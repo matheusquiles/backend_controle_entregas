@@ -9,5 +9,6 @@ import com.coletas.coletas.model.Edress;
 public interface EdressService extends BaseService<Edress, Integer> {
 	
 	List<AddressDTO> getByFilters(AddressRequest address);
+	Boolean editAddress(List<AddressDTO> addresses);
 
 }

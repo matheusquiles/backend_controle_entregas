@@ -24,15 +24,15 @@ public class EdressController extends BaseControllerImpl<Edress, Integer> {
 		super(service);
 	}
 	
-//	@PostMapping("/editAddress")
-//	public Boolean editUser(@RequestBody Users user) {
-//		try {
-//			service.editAddress(user);
-//			return true;
-//		} catch (Exception e) {
-//			throw new RuntimeException("Erro ao editar usuário!");
-//		}
-//	}
+	@PostMapping("/editAddress")
+	public Boolean editUser(@RequestBody List<AddressDTO> addresses) {
+		try {
+			service.editAddress(addresses);
+			return true;
+		} catch (Exception e) {
+			throw new RuntimeException("Erro ao editar usuário!");
+		}
+	}
 	
 	
 	@PostMapping("/getDTO")
