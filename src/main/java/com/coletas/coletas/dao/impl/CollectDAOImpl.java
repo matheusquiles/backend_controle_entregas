@@ -104,32 +104,41 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 	}
 
 	@Override
-	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress, String deliveryStatus) {
-		Session currentSession = entityManager.unwrap(Session.class);
-		StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
+	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, 
+	                                            Integer idSupervidor, Integer idEdress, String deliveryStatus) {
+	    Session currentSession = entityManager.unwrap(Session.class);
+	    
+	    StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
+	    
+	    if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+	        hql.append(" AND EXISTS (SELECT ci FROM CollectItens ci WHERE ci.collect.id = co.idCollect AND ci.deliveryStatus = :deliveryStatus)");
+	    }
 
-		Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
-		query.setParameter("initialDate", initialDate);
-		query.setParameter("finalDate", finalDate);
-		
-		if(idUser != null) {
-			query.setParameter("idUser", idUser);
-		}
-		
-		if(idSupervidor != null ) {
-			query.setParameter("idUser", idUser);
-		}
-		if(idEdress != null ) {
-			query.setParameter("idEdress", idEdress);
-		}
-		
-		List<CollectDTO> resultList = query.getResultList();
-		
-		for (CollectDTO collectDTO : resultList) {
-			collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect(), deliveryStatus));
-		}
+	    Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
+	    query.setParameter("initialDate", initialDate);
+	    query.setParameter("finalDate", finalDate);
+	    
+	    if (idUser != null) {
+	        query.setParameter("idUser", idUser);
+	    }
+	    if (idSupervidor != null) {
+	        query.setParameter("idSupervidor", idSupervidor); 
+	    }
+	    if (idEdress != null) {
+	        query.setParameter("idEdress", idEdress);
+	    }
+	    if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+	        query.setParameter("deliveryStatus", deliveryStatus);
+	    }
 
-		return resultList.isEmpty() ? new ArrayList<>() : resultList;
+	    List<CollectDTO> resultList = query.getResultList();
+	    
+	    // Popula os itens de cada CollectDTO
+	    for (CollectDTO collectDTO : resultList) {
+	        collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect(), deliveryStatus));
+	    }
+
+	    return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
 
 }
