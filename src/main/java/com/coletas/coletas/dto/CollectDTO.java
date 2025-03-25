@@ -3,13 +3,12 @@ package com.coletas.coletas.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.coletas.coletas.model.Users;
-
 public class CollectDTO {
 	
 	private Integer idCollect;
 	private String collectKey;
 	private String collectUser;
+	private String coordinator;
 	private String edress;
 	private String edressDescription;
 	private LocalDate date;
@@ -22,7 +21,7 @@ public class CollectDTO {
 
 
 	public CollectDTO(Integer idCollect, String collectKey, String collectUser, String edress, String edressDescription,
-			LocalDate date, Boolean status, List<CollectItensDTO> itens) {
+			LocalDate date, Boolean status, String coordinator, List<CollectItensDTO> itens) {
 		super();
 		this.idCollect = idCollect;
 		this.collectKey = collectKey;
@@ -32,6 +31,7 @@ public class CollectDTO {
 		this.date = date;
 		this.status = status;
 		this.itens = itens;
+		this.coordinator = coordinator;
 	}
 
 	public String getCollectUser() {
@@ -98,6 +98,16 @@ public class CollectDTO {
 	public void setItens(List<CollectItensDTO> itens) {
 		this.itens = itens;
 	}
+	
+	public String getCoordinator() {
+		return coordinator;
+	}
+
+
+	public void setCoordinator(String coordinator) {
+		this.coordinator = coordinator;
+	}
+
 
 	@Override
 	public String toString() {

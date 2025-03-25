@@ -70,7 +70,8 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		return c != null ? c : null;
 	}
 
-	private StringBuilder searchDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor, Integer idEdress) {
+	private StringBuilder searchDTO(Integer idUser, LocalDate initialDate, LocalDate finalDate, Integer idSupervidor,
+			Integer idEdress) {
 
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.CollectDTO(");
@@ -81,64 +82,71 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 		hql.append(" , ed.description edressDescription");
 		hql.append(" , co.date date");
 		hql.append(" , co.status status");
+		hql.append(" , coo.name coordinator");
 		hql.append(" ) ");
 
 		hql.append(" From Collect co ");
 		hql.append(" inner join co.userId us ");
 		hql.append(" inner join co.edress ed ");
+		hql.append(" left join Hierarchy h on h.motoboy.idUser = us.idUser ");
+		hql.append(" left join h.coordinator coo ");
 
 		hql.append(" where 1=1 ");
 
 		hql.append(" and co.date >= :initialDate ");
 		hql.append(" and co.date <= :finalDate ");
-		
-		if(idUser != null) {
+
+		if (idUser != null) {
 			hql.append(" and us.idUser = :idUser ");
 		}
-		
-		if(idEdress != null) {
+
+		if (idEdress != null) {
 			hql.append(" and ed.idEdress = :idEdress ");
 		}
-		
+		if (idSupervidor != null) {
+			hql.append(" and h.coordinator.idUser = :idSupervidor ");
+		}
+
 		return hql;
 	}
 
 	@Override
-	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate, 
-	                                            Integer idSupervidor, Integer idEdress, String deliveryStatus) {
-	    Session currentSession = entityManager.unwrap(Session.class);
-	    
-	    StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
-	    
-	    if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
-	        hql.append(" AND EXISTS (SELECT ci FROM CollectItens ci WHERE ci.collect.id = co.idCollect AND ci.deliveryStatus = :deliveryStatus)");
-	    }
+	public List<CollectDTO> getDTOByUserAndDate(Integer idUser, LocalDate initialDate, LocalDate finalDate,
+			Integer idSupervidor, Integer idEdress, String deliveryStatus) {
+		Session currentSession = entityManager.unwrap(Session.class);
 
-	    Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
-	    query.setParameter("initialDate", initialDate);
-	    query.setParameter("finalDate", finalDate);
-	    
-	    if (idUser != null) {
-	        query.setParameter("idUser", idUser);
-	    }
-	    if (idSupervidor != null) {
-	        query.setParameter("idSupervidor", idSupervidor); 
-	    }
-	    if (idEdress != null) {
-	        query.setParameter("idEdress", idEdress);
-	    }
-	    if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
-	        query.setParameter("deliveryStatus", deliveryStatus);
-	    }
+		StringBuilder hql = searchDTO(idUser, initialDate, finalDate, idSupervidor, idEdress);
 
-	    List<CollectDTO> resultList = query.getResultList();
-	    
-	    // Popula os itens de cada CollectDTO
-	    for (CollectDTO collectDTO : resultList) {
-	        collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect(), deliveryStatus));
-	    }
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			hql.append(
+					" AND EXISTS (SELECT ci FROM CollectItens ci WHERE ci.collect.id = co.idCollect AND ci.deliveryStatus = :deliveryStatus)");
+		}
 
-	    return resultList.isEmpty() ? new ArrayList<>() : resultList;
+		Query<CollectDTO> query = currentSession.createQuery(hql.toString(), CollectDTO.class);
+		query.setParameter("initialDate", initialDate);
+		query.setParameter("finalDate", finalDate);
+
+		if (idUser != null) {
+			query.setParameter("idUser", idUser);
+		}
+		if (idSupervidor != null) {
+			query.setParameter("idSupervidor", idSupervidor);
+		}
+		if (idEdress != null) {
+			query.setParameter("idEdress", idEdress);
+		}
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			query.setParameter("deliveryStatus", deliveryStatus);
+		}
+
+		List<CollectDTO> resultList = query.getResultList();
+
+		// Popula os itens de cada CollectDTO
+		for (CollectDTO collectDTO : resultList) {
+			collectDTO.setItens(collectItensDAO.searchDTOByIdCollect(collectDTO.getIdCollect(), deliveryStatus));
+		}
+
+		return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
 
 }

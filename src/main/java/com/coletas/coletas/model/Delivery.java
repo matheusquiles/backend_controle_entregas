@@ -49,6 +49,8 @@ public class Delivery implements Serializable{
 	@JoinColumn(name = "last_modification_by")
 	private Users lastModificationBy;
 	
+	private String deliveryStatus;
+	
 	public Delivery() {
 	}
 
@@ -71,7 +73,7 @@ public class Delivery implements Serializable{
 	
 	public Delivery(String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion, LocalDate date,
 			Boolean status, LocalDateTime creationDate, LocalDateTime lastModificationDate, Users createdBy,
-			Users lastModificationBy) {
+			Users lastModificationBy, String deliveryStatus) {
 		super();
 		this.deliveryKey = deliveryKey;
 		this.value = value;
@@ -83,6 +85,7 @@ public class Delivery implements Serializable{
 		this.lastModificationDate = lastModificationDate;
 		this.createdBy = createdBy;
 		this.lastModificationBy = lastModificationBy;
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	public Integer getIdDelivery() {
@@ -171,6 +174,14 @@ public class Delivery implements Serializable{
 
 	public void setLastModificationBy(Users lastModificationBy) {
 		this.lastModificationBy = lastModificationBy;
+	}
+	
+	public String getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(String deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	@Override
