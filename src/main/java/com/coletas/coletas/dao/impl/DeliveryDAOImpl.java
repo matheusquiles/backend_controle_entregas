@@ -80,6 +80,7 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		hql.append(", co.idUser idCoordinator");
 		hql.append(", co.name nameCoordinator");
 		hql.append(", dr.idDeliveryRegion idDeliveryRegion");
+		hql.append(", dr.deliveryRegion deliveryRegion");
 		hql.append(", de.date date ");
 		hql.append(", de.status status ");
 		hql.append(", de.deliveryStatus deliveryStatus ");
