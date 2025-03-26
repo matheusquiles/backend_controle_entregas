@@ -1,5 +1,5 @@
 # Etapa 1: Build da aplicação usando Maven
-FROM maven:3.8.6-openjdk-17 AS build
+FROM maven:3.8.6 AS build
 WORKDIR /app
 COPY pom.xml .
 COPY src ./src
