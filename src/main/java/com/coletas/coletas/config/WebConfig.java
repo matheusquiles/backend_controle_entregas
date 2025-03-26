@@ -7,13 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-	@Override
+    @Override
     public void addCorsMappings(@NonNull CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("https://select-data-site-6427d5c68d55.herokuapp.com") // URL do seu frontend
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+        registry.addMapping("/**")
+                .allowedOrigins("https://frontend-projeto-coletas.vercel.app", "http://localhost:3000") 
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
-
 }

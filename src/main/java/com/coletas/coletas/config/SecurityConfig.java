@@ -40,20 +40,28 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		httpSecurity.cors().and().csrf().disable().authorizeRequests().requestMatchers("/auth/login")
-				.permitAll().anyRequest().authenticated().and().exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
-				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	    httpSecurity.cors().and()
+	            .csrf().disable()
+	            .authorizeHttpRequests(auth -> auth
+	                .requestMatchers("/auth/login").permitAll()
+	                .anyRequest().authenticated()
+	            )
+	            .exceptionHandling(exception -> exception
+	                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+	            )
+	            .sessionManagement(session -> session
+	                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	            );
 
-		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	    httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
-		return httpSecurity.build();
+	    return httpSecurity.build();
 	}
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("https://select-data-site-6427d5c68d55.herokuapp.com");
+		configuration.addAllowedOrigin("https://frontend-projeto-coletas.vercel.app/");
 		configuration.addAllowedOrigin("http://localhost:3000");
 		configuration.addAllowedMethod("*");
 		configuration.addAllowedHeader("*");
@@ -64,10 +72,10 @@ public class SecurityConfig {
 		return source;
 	}
 
-	@Bean
-	public CorsFilter corsFilter() {
-		return new CorsFilter(corsConfigurationSource());
-	}
+//	@Bean
+//	public CorsFilter corsFilter() {
+//		return new CorsFilter(corsConfigurationSource());
+//	}
 
     @Bean
     public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
