@@ -83,11 +83,35 @@ public class UserDAOImpl extends BaseDAOImpl<Users, Integer> implements UserDAO 
 
 		return hql;
 	}
+	
+	private StringBuilder searchDTOByRoleAndHierarchy() {
+
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new com.coletas.coletas.dto.UserDTO(");
+		hql.append(" u.idUser idUser");
+		hql.append(", u.name name");
+		hql.append(", u.cpf cpf");
+		hql.append(", u.email email");
+		hql.append(", u.userKey userKey");
+		hql.append(", u.status status");
+		hql.append(", ut.description userType");
+		hql.append(", c.name coordinator ");
+		hql.append(" ) ");
+
+		hql.append(" From Users u ");
+		hql.append(" inner join u.userType ut ");
+	    hql.append(" left join Hierarchy h on h.motoboy.idUser = u.idUser ");
+	    hql.append(" left join h.coordinator c ");
+		
+		hql.append(" where 1=1 ");
+
+		return hql;
+	}
 
 	@Override
 	public List<UserDTO> getUserDTOByRole(Integer role) {
 		Session currentSession = entityManager.unwrap(Session.class);
-		StringBuilder hql = searchDTO();
+		StringBuilder hql = searchDTOByRoleAndHierarchy();
 		hql.append(" and ut.idUserType = :role ");
 
 		Query<UserDTO> query = currentSession.createQuery(hql.toString(), UserDTO.class);
