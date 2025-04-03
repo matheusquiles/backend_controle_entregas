@@ -154,17 +154,21 @@ public class UserServiceImpl extends BaseServiceImpl<Users, Integer> implements 
 	    try {
 	        user.setLastModificationDate(LocalDateTime.now());
 
-	        Hierarchy h = hierarchyDAO.getByMotoboy(user.getIdUser());
-	        if (h == null) {
-	            h = new Hierarchy();
+	        if(user.getUserType().getIdUserType() == 3) {
+	        	Hierarchy h = hierarchyDAO.getByMotoboy(user.getIdUser());
+	        	if (h == null) {
+	        		h = new Hierarchy();
+	        	}
+	        	
+	        	h.setMotoboy(user);
+	        	if (user.getHierarchy() != null) {
+	        		h.setCoordinator(dao.getById(user.getHierarchy())); 
+	        	}
+	        	
+	        	hierarchyDAO.save(h);
 	        }
+	        
 
-	        h.setMotoboy(user);
-	        if (user.getHierarchy() != null) {
-	            h.setCoordinator(dao.getById(user.getHierarchy())); 
-	        }
-
-	        hierarchyDAO.save(h);
 	        user.setHierarchy(null);
 	        dao.save(user);
 
