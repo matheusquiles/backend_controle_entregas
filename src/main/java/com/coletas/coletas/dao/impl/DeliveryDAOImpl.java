@@ -33,13 +33,13 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		StringBuilder hql = new StringBuilder();
 		hql.append("select count(de.idDelivery) ");
 		hql.append("from Delivery de ");
-		hql.append("inner join de.motoboy mo ");
+//		hql.append("inner join de.motoboy mo ");
 		hql.append("where de.date = :date ");
-		hql.append("and mo.idUser = :idUser ");
+//		hql.append("and mo.idUser = :idUser ");
 
 		Query<Long> query = currentSession.createQuery(hql.toString(), Long.class);
 		query.setParameter("date", date);
-		query.setParameter("idUser", idUser);
+//		query.setParameter("idUser", idUser);
 
 		Optional<Long> result = query.uniqueResultOptional();
 		return result.map(Long::intValue).orElse(0);
