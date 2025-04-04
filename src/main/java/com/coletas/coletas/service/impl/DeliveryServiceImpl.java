@@ -13,6 +13,7 @@ import com.coletas.coletas.dto.request.DeliveryEditRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryRequestDTO;
 import com.coletas.coletas.model.Delivery;
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.DeliveryItemService;
 import com.coletas.coletas.service.DeliveryService;
 import com.coletas.coletas.util.CreateKey;
 import com.coletas.coletas.util.DeliveryStatus;
@@ -24,6 +25,9 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 
 	@Autowired
 	private DeliveryDAO dao;
+	
+	@Autowired
+	private DeliveryItemService deliveryItemService;	
 
 	@Autowired
 	private CreateKey key;
@@ -73,5 +77,27 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 			return false;
 		}
 
+	}
+
+	@Override
+	@Transactional
+	public Delivery saveDelivery(Delivery delivery) {
+
+		try {
+			delivery.setCreationDate(LocalDateTime.now());
+			delivery.setDeliveryKey(key.createDeliveryKey(delivery));
+			delivery.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
+			Delivery savedDelivery = dao.saveObject(delivery);
+			savedDelivery.setDeliveryItems(delivery.getDeliveryItems());
+			
+			deliveryItemService.saveDeliveryItem(savedDelivery);
+			
+			return delivery;
+			
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to save collect: " + delivery.getIdDelivery(), e);
+		}
+		
+		
 	}
 }

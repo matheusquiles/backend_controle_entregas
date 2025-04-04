@@ -67,6 +67,17 @@ public class DeliveryItems implements Serializable{
 		this.valuePerUnitDelivery = valuePerUnitDelivery;
 		this.createdBy = createdBy;
 	}
+	
+	public DeliveryItems(DeliveryType deliveryType, Integer quantity, String deliveryStatus, LocalDateTime creationDate, Double valuePerUnitDelivery, Users createdBy) {
+		super();
+		this.deliveryType = deliveryType;
+		this.quantity = quantity;
+		this.deliveryStatus = deliveryStatus;
+		this.creationDate = creationDate;
+		this.valuePerUnitDelivery = valuePerUnitDelivery;
+		this.createdBy = createdBy;
+	}
+
 
 	public Integer getIdDeliveryItems() {
 		return idDeliveryItems;

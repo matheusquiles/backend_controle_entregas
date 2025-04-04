@@ -54,7 +54,7 @@ public class Delivery implements Serializable{
 	private String deliveryStatus;
 	
 	@Transient
-	private List<DeliveryItems> deliveryItem;
+	private List<DeliveryItems> deliveryItems;
 	
 	public Delivery() {
 	}
@@ -97,6 +97,24 @@ public class Delivery implements Serializable{
 		this.lastModificationBy = lastModificationBy;
 		this.deliveryStatus = deliveryStatus;
 	}
+	
+	public Delivery(String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion, LocalDate date,
+			Boolean status, LocalDateTime creationDate, Users createdBy,
+			String deliveryStatus, List<DeliveryItems> deliveryItems) {
+		super();
+		this.deliveryKey = deliveryKey;
+		this.value = value;
+		this.motoboy = motoboy;
+		this.deliveryRegion = deliveryRegion;
+		this.date = date;
+		this.status = status;
+		this.creationDate = creationDate;
+		this.createdBy = createdBy;
+		this.deliveryStatus = deliveryStatus;
+		this.deliveryItems = deliveryItems;
+	}
+	
+	
 
 	public Integer getIdDelivery() {
 		return idDelivery;
@@ -192,6 +210,14 @@ public class Delivery implements Serializable{
 
 	public void setDeliveryStatus(String deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
+	}
+	
+	public List<DeliveryItems> getDeliveryItems() {
+		return deliveryItems;
+	}
+
+	public void setDeliveryItems(List<DeliveryItems> deliveryItem) {
+		this.deliveryItems = deliveryItem;
 	}
 
 	@Override

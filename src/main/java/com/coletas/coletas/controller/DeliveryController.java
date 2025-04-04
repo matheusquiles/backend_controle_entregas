@@ -25,6 +25,19 @@ public class DeliveryController extends BaseControllerImpl<Delivery, Integer> {
 	public DeliveryController(DeliveryServiceImpl service) {
 		super(service);
 	}
+	
+	@Override
+	public Boolean save(Delivery delivery){
+		try {
+			service.saveDelivery(delivery);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	
 
 	@PostMapping("/getDTO")
 	public List<DeliveryDTO> getDTOByUserAndDate(@RequestBody DeliveryRequestDTO request) {
