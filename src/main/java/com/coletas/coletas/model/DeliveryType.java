@@ -21,6 +21,11 @@ public class DeliveryType implements Serializable{
 	public DeliveryType() {
 	}
 	
+	public DeliveryType(Integer idDeliveryType) {
+		super();
+		this.idDeliveryType = idDeliveryType;
+	}
+	
 	public DeliveryType(String description, Boolean status) {
 		super();
 		this.description = description;

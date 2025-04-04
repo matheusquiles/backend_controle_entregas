@@ -14,12 +14,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class DeliveryItem implements Serializable{
+public class DeliveryItems implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer idDeliveryItens;
+	private Integer idDeliveryItems;
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST})
 	@JoinColumn(name = "delivery", nullable=false)
@@ -37,7 +37,7 @@ public class DeliveryItem implements Serializable{
 	private LocalDateTime lastModificationDate;
 	
 	private Double valuePerUnitDelivery;
-	private Double totalToReceive;
+	private Double totalToPay;
 	
 	
 	@OneToOne()
@@ -48,10 +48,16 @@ public class DeliveryItem implements Serializable{
 	@JoinColumn(name = "last_modification_by")
 	private Users lastModificationBy;
 	
-	public DeliveryItem() {
+	public DeliveryItems() {
+	}
+	
+
+	public DeliveryItems(Integer idDeliveryItems) {
+		super();
+		this.idDeliveryItems = idDeliveryItems;
 	}
 
-	public DeliveryItem(Delivery delivery, DeliveryType deliveryType, Integer quantity, String deliveryStatus,
+	public DeliveryItems(Delivery delivery, DeliveryType deliveryType, Integer quantity, String deliveryStatus,
 			Double valuePerUnitDelivery, Users createdBy) {
 		super();
 		this.delivery = delivery;
@@ -62,12 +68,12 @@ public class DeliveryItem implements Serializable{
 		this.createdBy = createdBy;
 	}
 
-	public Integer getIdDeliveryItens() {
-		return idDeliveryItens;
+	public Integer getIdDeliveryItems() {
+		return idDeliveryItems;
 	}
 
-	public void setIdDeliveryItens(Integer idDeliveryItens) {
-		this.idDeliveryItens = idDeliveryItens;
+	public void setIdDeliveryItems(Integer idDeliveryItems) {
+		this.idDeliveryItems = idDeliveryItems;
 	}
 
 	public Delivery getDelivery() {
@@ -126,12 +132,12 @@ public class DeliveryItem implements Serializable{
 		this.valuePerUnitDelivery = valuePerUnitDelivery;
 	}
 
-	public Double getTotalToReceive() {
-		return totalToReceive;
+	public Double getTotalToPay() {
+		return totalToPay;
 	}
 
-	public void setTotalToReceive(Double totalToReceive) {
-		this.totalToReceive = totalToReceive;
+	public void setTotalToPay(Double totalToPay) {
+		this.totalToPay = totalToPay;
 	}
 
 	public Users getCreatedBy() {
@@ -152,14 +158,14 @@ public class DeliveryItem implements Serializable{
 
 	@Override
 	public String toString() {
-		return "DeliveryItem [idDeliveryItens=" + idDeliveryItens + "]";
+		return "DeliveryItem [idDeliveryItens=" + idDeliveryItems + "]";
 	}
 
-	public DeliveryItem(Integer idDeliveryItens, Delivery delivery, DeliveryType deliveryType, Integer quantity,
+	public DeliveryItems(Integer idDeliveryItens, Delivery delivery, DeliveryType deliveryType, Integer quantity,
 			String deliveryStatus, LocalDateTime creationDate, LocalDateTime lastModificationDate,
 			Double valuePerUnitDelivery, Double totalToReceive, Users createdBy, Users lastModificationBy) {
 		super();
-		this.idDeliveryItens = idDeliveryItens;
+		this.idDeliveryItems = idDeliveryItens;
 		this.delivery = delivery;
 		this.deliveryType = deliveryType;
 		this.quantity = quantity;
@@ -167,7 +173,7 @@ public class DeliveryItem implements Serializable{
 		this.creationDate = creationDate;
 		this.lastModificationDate = lastModificationDate;
 		this.valuePerUnitDelivery = valuePerUnitDelivery;
-		this.totalToReceive = totalToReceive;
+		this.totalToPay = totalToReceive;
 		this.createdBy = createdBy;
 		this.lastModificationBy = lastModificationBy;
 	}

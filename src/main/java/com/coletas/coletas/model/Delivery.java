@@ -1,5 +1,6 @@
 package com.coletas.coletas.model;
 
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -8,7 +9,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import jakarta.persistence.Transient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -54,9 +54,14 @@ public class Delivery implements Serializable{
 	private String deliveryStatus;
 	
 	@Transient
-	private List<DeliveryItem> deliveryItem;
+	private List<DeliveryItems> deliveryItem;
 	
 	public Delivery() {
+	}
+	
+	public Delivery(Integer idDelivery) {
+		super();
+		this.idDelivery = idDelivery;
 	}
 
 	public Delivery(Integer idDelivery, String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion,
