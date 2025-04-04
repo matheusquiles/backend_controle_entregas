@@ -50,7 +50,12 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 			Integer idCoordinator, Integer idDeliveryRegion, LocalDate initialDate) {
 		
 		Session currentSession = entityManager.unwrap(Session.class);
-		StringBuilder hql = searchDTO(idMotoboy, deliveryStatus, idCoordinator, idDeliveryRegion);
+		StringBuilder hql = searchDTO(idMotoboy, idCoordinator, idDeliveryRegion);
+		
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			hql.append(
+					" AND EXISTS (SELECT di FROM DeliveryItems di WHERE di.delivery.id = de.idDelivery AND di.deliveryStatus = :deliveryStatus)");
+		}
 		
 		Query<DeliveryDTO> query = currentSession.createQuery(hql.toString(), DeliveryDTO.class);
 		query.setParameter("initialDate", initialDate);
@@ -69,6 +74,9 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		if(idDeliveryRegion!= null) {
 			query.setParameter("idDeliveryRegion", idDeliveryRegion);
 		}
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			query.setParameter("deliveryStatus", deliveryStatus);
+		}
 		
 		List<DeliveryDTO> resultList = query.getResultList();
 		
@@ -79,7 +87,7 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
 	
-	private StringBuilder searchDTO(Integer idMotoboy, String deliveryStatus, Integer idCoordinator, Integer idDeliveryRegion) {
+	private StringBuilder searchDTO(Integer idMotoboy, Integer idCoordinator, Integer idDeliveryRegion) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.DeliveryDTO(");
 		hql.append("de.idDelivery idDelivery ");
@@ -109,10 +117,6 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		
 		if(idMotoboy!=null) {
 			hql.append(" and us.idUser = :idMotoboy ");
-		}
-		if(deliveryStatus!= null ) {
-			hql.append(" and de.deliveryStatus = :deliveryStatus ");
-			
 		}
 		if(idCoordinator!=null) {
 			hql.append(" and hi.coordinator.idUser = :idCoordinator ");
