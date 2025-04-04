@@ -19,6 +19,11 @@ public class DeliveryRegion implements Serializable{
 	
 	public DeliveryRegion() {
 	}
+	
+	public DeliveryRegion(Integer idDeliveryRegion) {
+		super();
+		this.idDeliveryRegion = idDeliveryRegion;
+	}
 
 	public DeliveryRegion(Integer idDeliveryRegion, String deliveryRegion, Boolean status) {
 		super();

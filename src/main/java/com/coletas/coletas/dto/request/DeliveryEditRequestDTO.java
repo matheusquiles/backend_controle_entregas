@@ -1,5 +1,9 @@
 package com.coletas.coletas.dto.request;
 
+import java.util.List;
+
+import com.coletas.coletas.dto.DeliveryItemsDTO;
+
 public class DeliveryEditRequestDTO {
 	
 	private Integer idDelivery;
@@ -7,17 +11,19 @@ public class DeliveryEditRequestDTO {
 	private Integer idDeliveryRegion;
 	private String deliveryStatus;
 	private Integer lastModificationBy;
+	private List<DeliveryItemsDTO> deliveryItemsDTO;
 	
 	public DeliveryEditRequestDTO() {
 	}
 
-	public DeliveryEditRequestDTO(Integer idDelivery, Double value, Integer idDeliveryRegion, String deliveryStatus, Integer lastModificationBy) {
+	public DeliveryEditRequestDTO(Integer idDelivery, Double value, Integer idDeliveryRegion, String deliveryStatus, Integer lastModificationBy, List<DeliveryItemsDTO> deliveryItemsDTO) {
 		super();
 		this.idDelivery = idDelivery;
 		this.value = value;
 		this.deliveryStatus = deliveryStatus;
 		this.lastModificationBy = lastModificationBy;
 		this.idDeliveryRegion = idDeliveryRegion;
+		this.deliveryItemsDTO = deliveryItemsDTO;
 	}
 
 	public Integer getIdDelivery() {
@@ -60,5 +66,12 @@ public class DeliveryEditRequestDTO {
 		this.idDeliveryRegion = idDeliveryRegion;
 	}
 
+	public List<DeliveryItemsDTO> getDeliveryItemsDTO() {
+		return deliveryItemsDTO;
+	}
+
+	public void setDeliveryItemsDTO(List<DeliveryItemsDTO> deliveryItemsDTO) {
+		this.deliveryItemsDTO = deliveryItemsDTO;
+	}
 
 }

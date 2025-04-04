@@ -11,5 +11,6 @@ public interface DeliveryService extends BaseService<Delivery, Integer> {
 
 	List<DeliveryDTO> getDTOByUserAndDate(DeliveryRequestDTO request);
 	Boolean editDelivery(List<DeliveryEditRequestDTO> dto);
+	Delivery saveDelivery(Delivery delivery);
 
 }

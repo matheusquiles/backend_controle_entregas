@@ -1,8 +1,10 @@
 package com.coletas.coletas.model;
 
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -51,7 +53,15 @@ public class Delivery implements Serializable{
 	
 	private String deliveryStatus;
 	
+	@Transient
+	private List<DeliveryItems> deliveryItems;
+	
 	public Delivery() {
+	}
+	
+	public Delivery(Integer idDelivery) {
+		super();
+		this.idDelivery = idDelivery;
 	}
 
 	public Delivery(Integer idDelivery, String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion,
@@ -87,6 +97,24 @@ public class Delivery implements Serializable{
 		this.lastModificationBy = lastModificationBy;
 		this.deliveryStatus = deliveryStatus;
 	}
+	
+	public Delivery(String deliveryKey, Double value, Users motoboy, DeliveryRegion deliveryRegion, LocalDate date,
+			Boolean status, LocalDateTime creationDate, Users createdBy,
+			String deliveryStatus, List<DeliveryItems> deliveryItems) {
+		super();
+		this.deliveryKey = deliveryKey;
+		this.value = value;
+		this.motoboy = motoboy;
+		this.deliveryRegion = deliveryRegion;
+		this.date = date;
+		this.status = status;
+		this.creationDate = creationDate;
+		this.createdBy = createdBy;
+		this.deliveryStatus = deliveryStatus;
+		this.deliveryItems = deliveryItems;
+	}
+	
+	
 
 	public Integer getIdDelivery() {
 		return idDelivery;
@@ -182,6 +210,14 @@ public class Delivery implements Serializable{
 
 	public void setDeliveryStatus(String deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
+	}
+	
+	public List<DeliveryItems> getDeliveryItems() {
+		return deliveryItems;
+	}
+
+	public void setDeliveryItems(List<DeliveryItems> deliveryItem) {
+		this.deliveryItems = deliveryItem;
 	}
 
 	@Override

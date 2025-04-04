@@ -7,15 +7,21 @@ import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.DeliveryDAO;
+import com.coletas.coletas.dao.DeliveryItemDAO;
 import com.coletas.coletas.dto.DeliveryDTO;
 import com.coletas.coletas.model.Delivery;
 
 @Repository
 public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements DeliveryDAO {
+	
+	@Autowired
+	private DeliveryItemDAO deliveryItemDAO;
+	
 
 	public DeliveryDAOImpl() {
 		super(Delivery.class);
@@ -27,13 +33,13 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		StringBuilder hql = new StringBuilder();
 		hql.append("select count(de.idDelivery) ");
 		hql.append("from Delivery de ");
-		hql.append("inner join de.motoboy mo ");
+//		hql.append("inner join de.motoboy mo ");
 		hql.append("where de.date = :date ");
-		hql.append("and mo.idUser = :idUser ");
+//		hql.append("and mo.idUser = :idUser ");
 
 		Query<Long> query = currentSession.createQuery(hql.toString(), Long.class);
 		query.setParameter("date", date);
-		query.setParameter("idUser", idUser);
+//		query.setParameter("idUser", idUser);
 
 		Optional<Long> result = query.uniqueResultOptional();
 		return result.map(Long::intValue).orElse(0);
@@ -44,7 +50,12 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 			Integer idCoordinator, Integer idDeliveryRegion, LocalDate initialDate) {
 		
 		Session currentSession = entityManager.unwrap(Session.class);
-		StringBuilder hql = searchDTO(idMotoboy, deliveryStatus, idCoordinator, idDeliveryRegion);
+		StringBuilder hql = searchDTO(idMotoboy, idCoordinator, idDeliveryRegion);
+		
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			hql.append(
+					" AND EXISTS (SELECT di FROM DeliveryItems di WHERE di.delivery.id = de.idDelivery AND di.deliveryStatus = :deliveryStatus)");
+		}
 		
 		Query<DeliveryDTO> query = currentSession.createQuery(hql.toString(), DeliveryDTO.class);
 		query.setParameter("initialDate", initialDate);
@@ -63,13 +74,20 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		if(idDeliveryRegion!= null) {
 			query.setParameter("idDeliveryRegion", idDeliveryRegion);
 		}
+		if (deliveryStatus != null && !"todos".equals(deliveryStatus)) {
+			query.setParameter("deliveryStatus", deliveryStatus);
+		}
 		
 		List<DeliveryDTO> resultList = query.getResultList();
+		
+		for (DeliveryDTO deliveryDTO : resultList) {
+			deliveryDTO.setDeliveryItemDTO(deliveryItemDAO.searchDTOByDelivery(deliveryDTO.getIdDelivery(), deliveryStatus));
+		}
 		
 		return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
 	
-	private StringBuilder searchDTO(Integer idMotoboy, String deliveryStatus, Integer idCoordinator, Integer idDeliveryRegion) {
+	private StringBuilder searchDTO(Integer idMotoboy, Integer idCoordinator, Integer idDeliveryRegion) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.coletas.coletas.dto.DeliveryDTO(");
 		hql.append("de.idDelivery idDelivery ");
@@ -99,10 +117,6 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		
 		if(idMotoboy!=null) {
 			hql.append(" and us.idUser = :idMotoboy ");
-		}
-		if(deliveryStatus!= null ) {
-			hql.append(" and de.deliveryStatus = :deliveryStatus ");
-			
 		}
 		if(idCoordinator!=null) {
 			hql.append(" and hi.coordinator.idUser = :idCoordinator ");

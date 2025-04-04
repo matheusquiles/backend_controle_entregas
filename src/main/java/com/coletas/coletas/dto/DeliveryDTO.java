@@ -1,6 +1,7 @@
 package com.coletas.coletas.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class DeliveryDTO {
 
@@ -17,13 +18,16 @@ public class DeliveryDTO {
 	private Boolean status;
 	private String deliveryStatus;
 	
+	private List<DeliveryItemsDTO> deliveryItemDTO;
+	
+	
 	public DeliveryDTO() {
 	}
 
 
 	public DeliveryDTO(Integer idDelivery, String deliveryKey, Double value, Integer idMotoboy, String nameMotoboy,
 			Integer idCoordinator, String nameCoordinator, Integer idDeliveryRegion, String deliveryRegion,
-			LocalDate date, Boolean status, String deliveryStatus) {
+			LocalDate date, Boolean status, String deliveryStatus, List<DeliveryItemsDTO> deliveryItemDTO) {
 		super();
 		this.idDelivery = idDelivery;
 		this.deliveryKey = deliveryKey;
@@ -37,6 +41,7 @@ public class DeliveryDTO {
 		this.date = date;
 		this.status = status;
 		this.deliveryStatus = deliveryStatus;
+		this.deliveryItemDTO = deliveryItemDTO;
 	}
 
 
@@ -139,7 +144,16 @@ public class DeliveryDTO {
 	public void setNameCoordinator(String nameCoordinator) {
 		this.nameCoordinator = nameCoordinator;
 	}
-	
+
+
+	public List<DeliveryItemsDTO> getDeliveryItemDTO() {
+		return deliveryItemDTO;
+	}
+
+
+	public void setDeliveryItemDTO(List<DeliveryItemsDTO> deliveryItemDTO) {
+		this.deliveryItemDTO = deliveryItemDTO;
+	}
 	
 	
 }

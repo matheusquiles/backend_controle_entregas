@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service;
 import com.coletas.coletas.dao.DeliveryDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.DeliveryDTO;
+import com.coletas.coletas.dto.DeliveryItemsDTO;
 import com.coletas.coletas.dto.request.DeliveryEditRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryRequestDTO;
 import com.coletas.coletas.model.Delivery;
+import com.coletas.coletas.model.DeliveryItems;
 import com.coletas.coletas.model.Users;
+import com.coletas.coletas.service.DeliveryItemService;
 import com.coletas.coletas.service.DeliveryService;
 import com.coletas.coletas.util.CreateKey;
 import com.coletas.coletas.util.DeliveryStatus;
@@ -24,6 +27,9 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 
 	@Autowired
 	private DeliveryDAO dao;
+	
+	@Autowired
+	private DeliveryItemService deliveryItemService;	
 
 	@Autowired
 	private CreateKey key;
@@ -62,6 +68,21 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 				savedDelivery.setValue(deliveryEditRequestDTO.getValue());
 				savedDelivery.setLastModificationDate(LocalDateTime.now());
 				
+				if(deliveryEditRequestDTO.getDeliveryItemsDTO() != null && !deliveryEditRequestDTO.getDeliveryItemsDTO().isEmpty()) {
+					for (DeliveryItemsDTO dto : deliveryEditRequestDTO.getDeliveryItemsDTO()) {
+						DeliveryItems deliveryItem = deliveryItemService.findById(dto.getIdDeliveryItems()).orElseThrow();
+						deliveryItem.setLastModificationBy(laster);
+						deliveryItem.setLastModificationDate(LocalDateTime.now());
+						deliveryItem.setDeliveryStatus(dto.getDeliveryStatus());
+						deliveryItem.setQuantity(dto.getQuantity());
+						deliveryItem.setValuePerUnitDelivery(dto.getValuePerUnitDelivery());
+						deliveryItem.setTotalToPay(dto.getValuePerUnitDelivery() * dto.getQuantity());
+						
+						deliveryItemService.save(deliveryItem);
+					}
+				}
+				
+				
 				dao.save(savedDelivery);
 			}
 			
@@ -73,5 +94,27 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 			return false;
 		}
 
+	}
+
+	@Override
+	@Transactional
+	public Delivery saveDelivery(Delivery delivery) {
+
+		try {
+			delivery.setCreationDate(LocalDateTime.now());
+			delivery.setDeliveryKey(key.createDeliveryKey(delivery));
+			delivery.setDeliveryStatus(DeliveryStatus.PENDENTE.getDescricao());
+			Delivery savedDelivery = dao.saveObject(delivery);
+			savedDelivery.setDeliveryItems(delivery.getDeliveryItems());
+			
+			deliveryItemService.saveDeliveryItem(savedDelivery);
+			
+			return delivery;
+			
+		} catch (Exception e) {
+			throw new RuntimeException("Failed to save collect: " + delivery.getIdDelivery(), e);
+		}
+		
+		
 	}
 }
