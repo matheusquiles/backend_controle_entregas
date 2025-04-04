@@ -7,15 +7,21 @@ import java.util.Optional;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.DeliveryDAO;
+import com.coletas.coletas.dao.DeliveryItemDAO;
 import com.coletas.coletas.dto.DeliveryDTO;
 import com.coletas.coletas.model.Delivery;
 
 @Repository
 public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements DeliveryDAO {
+	
+	@Autowired
+	private DeliveryItemDAO deliveryItemDAO;
+	
 
 	public DeliveryDAOImpl() {
 		super(Delivery.class);
@@ -65,6 +71,10 @@ public class DeliveryDAOImpl extends BaseDAOImpl<Delivery, Integer> implements D
 		}
 		
 		List<DeliveryDTO> resultList = query.getResultList();
+		
+		for (DeliveryDTO deliveryDTO : resultList) {
+			deliveryDTO.setDeliveryItemDTO(deliveryItemDAO.searchDTOByDelivery(deliveryDTO.getIdDelivery(), deliveryStatus));
+		}
 		
 		return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
