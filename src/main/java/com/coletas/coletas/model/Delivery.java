@@ -3,10 +3,12 @@ package com.coletas.coletas.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.Transient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -50,6 +52,9 @@ public class Delivery implements Serializable{
 	private Users lastModificationBy;
 	
 	private String deliveryStatus;
+	
+	@Transient
+	private List<DeliveryItem> deliveryItem;
 	
 	public Delivery() {
 	}
