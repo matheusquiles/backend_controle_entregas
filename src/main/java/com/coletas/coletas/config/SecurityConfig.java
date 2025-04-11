@@ -61,7 +61,7 @@ public class SecurityConfig {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.addAllowedOrigin("https://frontend-projeto-coletas.vercel.app/");
+		configuration.addAllowedOrigin("https://controleentregas.vercel.app/");
 		configuration.addAllowedOrigin("http://localhost:3000");
 		configuration.addAllowedMethod("*");
 		configuration.addAllowedHeader("*");
