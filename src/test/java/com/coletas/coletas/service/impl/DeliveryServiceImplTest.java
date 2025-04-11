@@ -1,7 +1,7 @@
 package com.coletas.coletas.service.impl;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,11 +9,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.coletas.coletas.dao.DeliveryDAO;
 import com.coletas.coletas.model.Delivery;
 import com.coletas.coletas.util.CreateKey;
 
+@ActiveProfiles("test")
+@SpringBootTest
 public class DeliveryServiceImplTest {
 
     @Mock

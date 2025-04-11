@@ -11,12 +11,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.coletas.coletas.dao.DeliveryItemDAO;
 import com.coletas.coletas.model.Delivery;
 import com.coletas.coletas.model.DeliveryItems;
 import com.coletas.coletas.model.DeliveryType;
 
+@ActiveProfiles("test")
+@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class DeliveryItemServiceImplTest {
 
