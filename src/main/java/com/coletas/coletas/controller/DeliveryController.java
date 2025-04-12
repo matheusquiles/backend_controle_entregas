@@ -3,6 +3,7 @@ package com.coletas.coletas.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coletas.coletas.dto.DeliveryDTO;
 import com.coletas.coletas.dto.request.DeliveryEditRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryRequestDTO;
+import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.Delivery;
 import com.coletas.coletas.service.DeliveryService;
 import com.coletas.coletas.service.impl.DeliveryServiceImpl;
@@ -63,6 +65,20 @@ public class DeliveryController extends BaseControllerImpl<Delivery, Integer> {
 			return null;
 		}
 
+	}
+	
+	@PostMapping("/batch")
+	public ResponseEntity<Delivery> createCollectBatch(@RequestBody List<Delivery> deliveries) {
+
+		try {
+			for (Delivery delivery : deliveries) {
+				service.saveDelivery(delivery);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.ok().build();
 	}
 
 }

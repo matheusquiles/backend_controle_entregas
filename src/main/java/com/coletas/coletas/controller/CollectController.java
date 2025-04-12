@@ -3,6 +3,7 @@ package com.coletas.coletas.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +64,20 @@ public class CollectController extends BaseControllerImpl<Collect, Integer> {
 			throw new RuntimeException("Erro ao editar usuário!");
 		}
 
+	}
+	
+	@PostMapping("/batch")
+	public ResponseEntity<Collect> createCollectBatch(@RequestBody List<Collect> collects) {
+
+		try {
+			for (Collect collect : collects) {
+				service.saveCollect(collect);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return ResponseEntity.ok().build();
 	}
 
 }
