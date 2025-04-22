@@ -158,14 +158,11 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 	    StringBuilder hql = new StringBuilder();
 	    hql.append("select new com.coletas.coletas.dto.CollectReportDTO(");
 	    hql.append(" c.date ");
-	    hql.append(" , COUNT(c.idCollect) ");
-	    hql.append(" , SUM(subquery.totalToReceive) ");
+	    hql.append(" , COUNT(distinct c.idCollect) ");
+	    hql.append(" , SUM(ci.totalToReceive) ");
 	    hql.append(" ) ");
-	    hql.append(" from Collect c ");
-	    hql.append(" inner join ( SELECT ci.collect.idCollect AS collect, SUM(ci.totalToReceive) AS totalToReceive ");
-	    hql.append("                 from CollectItens ci ");
-	    hql.append("                 group by ci.collect.idCollect ");
-	    hql.append("             ) subquery ON subquery.collect = c.idCollect ");
+	    hql.append(" from CollectItens ci ");
+	    hql.append(" inner join ci.collect c ");
 	    hql.append(" where c.date = :date ");
 	    hql.append(" group by c.date");
 
