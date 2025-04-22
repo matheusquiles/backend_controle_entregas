@@ -10,6 +10,8 @@ import com.coletas.coletas.dao.DeliveryDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.DeliveryDTO;
 import com.coletas.coletas.dto.DeliveryItemsDTO;
+import com.coletas.coletas.dto.DeliveryReportDTO;
+import com.coletas.coletas.dto.ReportRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryEditRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryRequestDTO;
 import com.coletas.coletas.model.Delivery;
@@ -116,5 +118,10 @@ public class DeliveryServiceImpl extends BaseServiceImpl<Delivery, Integer> impl
 		}
 		
 		
+	}
+
+	@Override
+	public DeliveryReportDTO deliveriesByDay(ReportRequestDTO report) {
+		return dao.deliveriesByDay(report);
 	}
 }

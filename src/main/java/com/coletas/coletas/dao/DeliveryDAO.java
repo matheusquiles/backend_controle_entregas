@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.coletas.coletas.dto.DeliveryDTO;
+import com.coletas.coletas.dto.DeliveryReportDTO;
+import com.coletas.coletas.dto.ReportRequestDTO;
 import com.coletas.coletas.dto.request.DeliveryRequestDTO;
 import com.coletas.coletas.model.Delivery;
 
@@ -11,5 +13,6 @@ public interface DeliveryDAO extends BaseDAO<Delivery, Integer> {
 	Integer countDeliveriesByUserAndDate(Integer idUser, LocalDate date);
 	List<DeliveryDTO> getDTOByUserAndDate(Integer idMotoboy, String deliveryStatus, LocalDate finalDate,
 			Integer idCoordinator, Integer idDeliveryRegion, LocalDate initialDate);
+	DeliveryReportDTO deliveriesByDay(ReportRequestDTO report);
 
 }
