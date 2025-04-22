@@ -12,6 +12,8 @@ import com.coletas.coletas.dao.CollectItensDAO;
 import com.coletas.coletas.dao.UserDAO;
 import com.coletas.coletas.dto.CollectDTO;
 import com.coletas.coletas.dto.CollectItensDTO;
+import com.coletas.coletas.dto.CollectReportDTO;
+import com.coletas.coletas.dto.ReportRequestDTO;
 import com.coletas.coletas.dto.request.CollectEditRequestDTO;
 import com.coletas.coletas.model.Collect;
 import com.coletas.coletas.model.CollectItens;
@@ -131,6 +133,12 @@ public class CollectServiceImpl extends BaseServiceImpl<Collect, Integer> implem
 			throw new RuntimeException("Erro ao editar usuário!");
 		}
 		
+	}
+
+
+	@Override
+	public CollectReportDTO collectsByDay(ReportRequestDTO report) {
+		return dao.collectsByDay(report);
 	}
 	
 

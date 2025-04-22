@@ -14,6 +14,9 @@ import com.coletas.coletas.dao.BaseDAOImpl;
 import com.coletas.coletas.dao.CollectDAO;
 import com.coletas.coletas.dao.CollectItensDAO;
 import com.coletas.coletas.dto.CollectDTO;
+import com.coletas.coletas.dto.CollectReportDTO;
+import com.coletas.coletas.dto.CollectTypeReportDTO;
+import com.coletas.coletas.dto.ReportRequestDTO;
 import com.coletas.coletas.model.Collect;
 
 @Repository
@@ -148,5 +151,58 @@ public class CollectDAOImpl extends BaseDAOImpl<Collect, Integer> implements Col
 
 		return resultList.isEmpty() ? new ArrayList<>() : resultList;
 	}
+
+	@Override
+	public CollectReportDTO collectsByDay(ReportRequestDTO report) {
+	    Session currentSession = entityManager.unwrap(Session.class);
+	    StringBuilder hql = new StringBuilder();
+	    hql.append("select new com.coletas.coletas.dto.CollectReportDTO(");
+	    hql.append(" c.date ");
+	    hql.append(" , COUNT(c.idCollect) ");
+	    hql.append(" , SUM(subquery.totalToReceive) ");
+	    hql.append(" ) ");
+	    hql.append(" from Collect c ");
+	    hql.append(" inner join ( SELECT ci.collect.idCollect AS collect, SUM(ci.totalToReceive) AS totalToReceive ");
+	    hql.append("                 from CollectItens ci ");
+	    hql.append("                 group by ci.collect.idCollect ");
+	    hql.append("             ) subquery ON subquery.collect = c.idCollect ");
+	    hql.append(" where c.date = :date ");
+	    hql.append(" group by c.date");
+
+	    try {
+	        Query<CollectReportDTO> query = currentSession.createQuery(hql.toString(), CollectReportDTO.class);
+	        query.setParameter("date", report.getDate());
+	        CollectReportDTO result = query.getSingleResult();
+	        result.setByType(collectTypeByDay(report.getDate()));
+	        return result;
+	    } catch (Exception e) {
+	        System.err.println("Erro ao criar/executar a query HQL: " + hql.toString());
+	        e.printStackTrace();
+	        throw new RuntimeException("Falha na execução da query: " + e.getMessage(), e);
+	    }
+	}
+	
+	private List<CollectTypeReportDTO> collectTypeByDay(LocalDate date) {
+		Session currentSession = entityManager.unwrap(Session.class);
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select new com.coletas.coletas.dto.CollectTypeReportDTO(");
+		hql.append(" ct.description, ");
+		hql.append(" COUNT(DISTINCT ci.collect), ");
+		hql.append(" SUM(ci.totalToReceive) ");
+		hql.append(") ");
+		hql.append("from CollectItens ci ");
+		hql.append("inner join ci.collect c ");
+		hql.append("inner join ci.collectType ct ");
+		hql.append("where c.date = :date ");
+		hql.append("group by ct.description");
+
+		Query<CollectTypeReportDTO> query = currentSession.createQuery(hql.toString(), CollectTypeReportDTO.class);
+		query.setParameter("date", date); 
+		List<CollectTypeReportDTO> results = query.getResultList();
+		
+		return results;
+	}
+	
 
 }
